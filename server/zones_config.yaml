@@ -1,0 +1,2222 @@
+app:
+  app_id: 1006 # Brilon laboratory
+  host: "localhost" #"192.168.0.123"
+  port: 9999
+  audit_path : "C:\\Diabots\\Logs"
+  audit_level: 20
+  camera1_ip: "192.168.0.11"
+  camera2_ip: "192.168.0.22"
+  transits_ip: "192.168.40.242" #"128.1.1.47"
+  transits_port: 15009  # 15005
+  festo_ip: '192.168.0.102'
+  horiz_axis_ip: '192.168.0.43'
+  decap_port: "COM3"
+  centri_port: "COM3"
+  cam2_color: 'M01'
+  cam2_bc_bc: 'M02'
+  cam2_bc_ac: 'M03'
+  image_src_path: 'C:\\Diabots\\camera\\cam2_images'
+  image_dest_path: 'C:\\Diabots\\camera\\cam2_sorted_images'
+  camera1_images_path: 'C:\\Diabots\\camera\\cam1_images'
+  sftp_active: 0
+  disposal_time: 3 # number of days the samples can be in  archive
+  retention_period: 1 # number days the images, logs to keep in the system
+  controls_time: "05:00"
+  
+  robots:
+    &Robot1 1: 'Robot1'
+  
+  colors:  
+    &GREEN  1: 'GREEN' #cs,ca #small
+    &ORANGE 2: 'ORANGE' #dimension big
+    &YELLOW 3: 'YELLOW' #dimension medium
+    &RED 4: 'RED' #XN550 ,small
+    &COUNTER 5: 'COUNTER'
+    &UNLOAD 6: 'UNLOAD'
+    &BROWN 8: 'BROWN' #dimension BIG
+    &BIGRED 9: 'BIGRED' #ortho , BIG
+    &PILOT 10: 'PILOT' #ortho ,small?
+    &CONTROL 11: 'CONTROL'
+
+  transits:
+    - &DIMM 'DIMM'
+    - &SYSM 'SYSM'
+    - &COAG 'COAG'
+    - &ERRR 'ERRR'
+    - &ARCH 'ARCH'
+    - &EXTS 'EXTS'
+    - &BLGR 'BLGR'
+    - &CRST 'CRST'
+    - &DIMM-ARCH 'DIMM-ARCH'
+    - &SYSM-ARCH 'SYSM-ARCH'
+    - &COAG-ARCH 'COAG-ARCH'
+    - &ORTH-ARCH 'ORTH-ARCH'
+  
+  phases:
+    &READY_TO_LOAD 1: 'READY_TO_LOAD'
+    &READY_TO_START 2: 'READY_TO_START'
+    &IN_PROCESS 3: 'IN_PROCESS'
+    &READY_TO_STOP 4: 'READY_TO_STOP'
+    &READY_TO_UNLOAD 5: 'READY_TO_UNLOAD'
+    &READAY_TO_PROCESS 6: 'READAY_TO_PROCESS'
+    &LOADING 7: 'LOADING'
+    &UNLOADING 8: 'UNLOADING'
+    &PRE_PROCESS 9: 'PRE_PROCESS'
+    &POST_PROCESS 10: 'POST_PROCESS'
+
+  vial_types:
+    &SMALL 1: 'SMALL'
+    &BIG 2: 'BIG'
+    &MEDIUM 3: 'MEDIUM'
+    &PILOT_TYPE 5: 'PILOT'
+    &CONTROL_TYPE 6: 'CONTROL'
+  
+  item_types:
+    &VIAL 1: 'VIAL'
+    &ZONE 2: 'ZONE'
+  
+  color_type_map:
+    - colors: [*BIGRED,*ORANGE,*BROWN]
+      vial_type: *BIG 
+    - colors: [*GREEN, *RED]
+      vial_type: *SMALL
+    - colors: [*YELLOW]
+      vial_type: *MEDIUM
+  
+  color_zone_map:
+    - colors: [*YELLOW,*ORANGE,*BROWN]
+      zone: 13
+    - colors: [*GREEN]
+      zone: 6
+    - colors: [*RED]
+      zone: 8
+    - colors: [*BIGRED]
+      zone: 21
+
+  color_type_level_map:
+    - colors: [*GREEN]
+      vial_type: *SMALL
+      cell: 'M5' 
+    - colors: [*RED]
+      vial_type: *SMALL
+      cell: 'M4'
+    - colors: [*YELLOW]
+      vial_type: *MEDIUM
+      cell: 'M7'
+    - colors: [*ORANGE,*BROWN,*BIGRED]
+      vial_type: *BIG
+      cell: 'M8'
+
+  zone_controls_map:
+    - rackzone: 5
+      total: 6
+      per_subzone: 3
+      transit: *COAG
+      mac_zone: 6
+    - rackzone: 12
+      total: 6
+      per_subzone: 3
+      transit: *DIMM
+      mac_zone: 13
+    - rackzone: 17
+      total: 2
+      per_subzone: 1
+      transit: *SYSM
+      mac_zone: 8   
+
+  color_transit_map:
+    - colors: [*BIGRED]
+      transits: [*BLGR,*CRST,*EXTS,*ORTH-ARCH,*ARCH,*ERRR]
+    - colors: [*RED]
+      transits: [*SYSM,*EXTS,*SYSM-ARCH,*ARCH,*ERRR]
+    
+  zone_types:
+    &PILOTS 1: 'PILOTS'
+    &SAMPLES 2: 'SAMPLES'
+    &CONTROLS 3: 'CONTROLS'
+    &MEDIUMS 4: 'MEDIUMS'
+    &BIGS 5: 'BIGS'
+    &DIMENSION1 6: 'DIMENSION1'
+    &DIMENSION2 7: 'DIMENSION2'
+    &DIMENSION3 8: 'DIMENSION3'
+    &DIMENSION4 9: 'DIMENSION4'
+    &COAGULATIONS 10: 'COAGULATIONS'
+
+zones:
+
+  - zone_id: &camera1 1
+    name: "Camera1"
+    subzones: []
+    zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, [71,5], [72,5], [73,5], [74,5], [75,5], [76,5],[77,5],[78,5],[79,5],[80,5],[81,5],[82,5],[83,5],[84,5],[85,5],[86,5],[87,5],[88,5],[89,5],[90,5]] #emergency positions 0 is treated as none
+    #zone_items: [[1, 0, 1], [2, 0, 1], 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, [13, 0, 1], [14, 0, 1], 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, [25, 0, 1], [26, 0, 1], 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, [37, 0, 1], [38, 0, 1], 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, [49, 0, 1], [50, 0, 1], 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, [71,5], [72,5], [73,5], [74,5], [75,5], [76,5],[77,5],[78,5],[79,5],[80,5],[81,5],[82,5],[83,5],[84,5],[85,5],[86,5],[87,5],[88,5],[89,5],[90,5]]#emergency positions 0 is treated as none
+
+    phase_order: [*READY_TO_UNLOAD]
+    pallets:
+      - rows: 5
+        cols: 12
+      - rows: 5
+        cols: 2
+      - rows: 5
+        cols: 4
+    
+  - zone_id: &camera2 2
+    name: "Camera2"
+    subzones: []
+    zone_items: [1]
+    phase_order: [*READY_TO_LOAD,*LOADING,*READY_TO_UNLOAD,*READY_TO_LOAD]    
+
+  - zone_id: &centrifuge_racks 3
+    name: "Centrifuge Racks"
+    zone_items: [1, 2]
+    rows: 4
+    columns: 2
+    pick_index: 0
+    subzones:
+      - zone_id: 1
+        name: "Centrifuge Racks Batch1"
+        zone_items: [[1,[1,3]],[28,[1,3]],[9,[1,3]],[36,[1,3]],[3,[1,3]],[30,[1,3]],[7,[1,3]],[34,[1,3]],[2,[1,3]],[29,[1,3]],[8,[1,3]],[35,[1,3]],[4,[1,3]],[31,[1,3]],[6,[1,3]],[33,[1,3]],[10,2],[19,2],[18,2],[27,2],[12,2],[21,2],[16,2],[25,2],[11,2],[20,2],[17,2],[26,2],[13,2],[22,2],[15,2],[24,2]]
+        rows: 3
+        columns: 3
+        phase_order: [*READY_TO_LOAD,*LOADING,*PRE_PROCESS,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+      - zone_id: 2
+        name: "Centrifuge Racks Batch2"
+        zone_items: [[1,[1,3]],[28,[1,3]],[9,[1,3]],[36,[1,3]],[3,[1,3]],[30,[1,3]],[7,[1,3]],[34,[1,3]],[2,[1,3]],[29,[1,3]],[8,[1,3]],[35,[1,3]],[4,[1,3]],[31,[1,3]],[6,[1,3]],[33,[1,3]],[10,2],[19,2],[18,2],[27,2],[12,2],[21,2],[16,2],[25,2],[11,2],[20,2],[17,2],[26,2],[13,2],[22,2],[15,2],[24,2]]
+        rows: 3
+        columns: 3
+        phase_order: [*READY_TO_LOAD,*LOADING,*PRE_PROCESS,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+
+  - zone_id: &centrifuge_machine 4
+    name: "Centrifuge Machine"
+    zone_items: [1] 
+    subzones:
+      - zone_id: 1
+        name: "Centrifuge Machine"
+        run_time: 2
+        zone_items: [[1,[1,3]],[28,[1,3]],[9,[1,3]],[36,[1,3]],[3,[1,3]],[30,[1,3]],[7,[1,3]],[34,[1,3]],[2,[1,3]],[29,[1,3]],[8,[1,3]],[35,[1,3]],[4,[1,3]],[31,[1,3]],[6,[1,3]],[33,[1,3]],[10,2],[19,2],[18,2],[27,2],[12,2],[21,2],[16,2],[25,2],[11,2],[20,2],[17,2],[26,2],[13,2],[22,2],[15,2],[24,2]]
+        phase_order: [*READY_TO_LOAD,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]  
+
+  - zone_id: &cs_racks 5
+    name: "CS Racks"
+    zone_items: [1, 2]
+    rows: 4 
+    columns: 10
+    subzones:
+      - zone_id: 1
+        name: "CS Racks Batch1"
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        rows: 10
+        columns: 1
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]  
+
+      - zone_id: 2
+        name: "CS Racks Batch2"
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        rows: 10
+        columns: 1
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]  
+
+      - zone_id: 3
+        name: "CS Racks Batch3"
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        rows: 10
+        columns: 1
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+
+      - zone_id: 4
+        name: "CS Racks Batch4"
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        rows: 10
+        columns: 1
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD] 
+
+  - zone_id: &cs_machine 6
+    name: "CS/CA Machine"
+    zone_items: [1] 
+    subzones:
+      - zone_id: 1
+        name: "CS Machine"
+        run_time: 10
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        phase_order: [*READY_TO_LOAD,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        sensor_id: 2
+        is_active: 1 
+        gui_id: 3             
+
+      - zone_id: 2
+        name: "CA Machine"
+        run_time: 2
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        phase_order: [*READY_TO_LOAD,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        is_active: 0
+        gui_id: 4
+
+  - zone_id: &sysmex_machine 8
+    name: "Sysmex Machine"
+    zone_items: [1,2] 
+    rows: 1
+    columns: 2
+    subzones:
+      - zone_id: 1        
+        name: "Sysmex Machine 1"
+        run_time: 5
+        rows: 2
+        columns: 5
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] 
+        phase_order: [*PRE_PROCESS,*READY_TO_LOAD,*LOADING,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        is_active: 1
+        stand_by_time: 3300
+        wait_time: 10
+        gui_id: 1
+
+      - zone_id: 2
+        name: "Sysmex Machine 2"
+        run_time: 2
+        rows: 2
+        columns: 5        
+        zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] 
+        phase_order: [*PRE_PROCESS,*READY_TO_LOAD,*LOADING,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        is_active: 1
+        stand_by_time: 3300
+        wait_time: 10
+        gui_id: 2
+
+  - zone_id: &counter_weights 9
+    name: "Counter Weights"
+    zone_items: [[1,1], [2,2],[3,1],[4,2]]
+    rows: 2
+    columns: 2
+    phase_order: [*READY_TO_UNLOAD]
+    subzones: []
+
+  - zone_id: &fehler 10
+    name: "Fehler"
+    subzones: []
+    zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    rows: 3
+    columns: 10
+    capacity_check: 1
+
+  - zone_id: &ortho_archiv 111
+    name: "Ortho Archiv"
+    zone_items: [1, 2, 3, 4]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 1
+    zone_stack: 2
+    capacity_check: 1
+    subzones:
+      - zone_id: 1
+        name: "Ortho Archiv Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READAY_TO_PROCESS,*READY_TO_UNLOAD,*UNLOADING, *READY_TO_UNLOAD]  
+        zone_type: *PILOTS      
+      - zone_id: 2
+        name: "Ortho Archiv Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READAY_TO_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type: *PILOTS      
+      - zone_id: 3
+        name: "Ortho Archiv Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READAY_TO_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type: *SAMPLES
+      - zone_id: 4
+        name: "Ortho Archiv Batch4"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READAY_TO_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type: *SAMPLES
+  
+  - zone_id: &coagulation_archiv 112
+    name: "Coagulation Archiv1"
+    zone_items: [1, 2, 3]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 2
+    zone_stack: 2
+    capacity_check: 1
+    subzones:
+      - zone_id: 1
+        name: "Coagulation Archiv1 Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD,*READAY_TO_PROCESS,*IN_PROCESS]        
+        zone_type: *COAGULATIONS 
+      - zone_id: 2
+        name: "Coagulation Archiv1 Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]   
+        zone_type: *COAGULATIONS     
+      - zone_id: 3
+        name: "Coagulation Archiv1 Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type: *COAGULATIONS
+      - zone_id: 4
+        name: "CS-CA Archiv1 Batch4"
+        zone_items: [1,2,3,4,5] 
+        rows: 10
+        columns: 5
+        phase_order: [*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type: *CONTROLS
+  
+  - zone_id: &dimension_archiv1 113
+    name: "Dimension Archiv1"
+    zone_items: [1, 2, 3, 4]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 2
+    zone_stack: 2
+    subzones:
+      - zone_id: 1
+        name: "Dimension Archiv1 Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD,*READAY_TO_PROCESS,*IN_PROCESS] 
+        zone_type : *DIMENSION1
+      - zone_id: 2
+        name: "Dimension Archiv1 Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION1       
+      - zone_id: 3
+        name: "Dimension Archiv1 Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION1
+      - zone_id: 4
+        name: "Dimension Archiv1 Batch4"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION1
+        
+  - zone_id: &dimension_archiv2 114
+    name: "Dimension Archiv2"
+    zone_items: [1, 2, 3, 4]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 2
+    zone_stack: 2
+    subzones:
+      - zone_id: 1
+        name: "Dimension Archiv2 Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION2
+      - zone_id: 2
+        name: "Dimension Archiv2 Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION2
+      - zone_id: 3
+        name: "Dimension Archiv2 Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION2
+      - zone_id: 4
+        name: "Dimension Archiv2 Batch4"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION2
+
+  - zone_id: &dimension_archiv3 115
+    name: "Dimension Archiv3"
+    zone_items: [1, 2, 3, 4]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 2
+    zone_stack: 2
+    subzones:
+      - zone_id: 1
+        name: "Dimension Archiv3 Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION3       
+      - zone_id: 2
+        name: "Dimension Archiv3 Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION3       
+      - zone_id: 3
+        name: "Dimension Archiv3 Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION3
+      - zone_id: 4
+        name: "Dimension Archiv3 Batch4"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION3
+
+  - zone_id: &dimension_archiv4 116
+    name: "Dimension Archiv4"
+    zone_items: [1, 2, 3, 4]
+    rows: 1
+    columns: 3
+    stateful: 1
+    has_common_door: 1
+    zone_location: 2
+    zone_stack: 2
+    capacity_check: 1
+    subzones:
+      - zone_id: 1
+        name: "Dimension Archiv4 Batch1"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]   
+        zone_type : *DIMENSION4     
+      - zone_id: 2
+        name: "Dimension Archiv4 Batch2"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION4       
+      - zone_id: 3
+        name: "Dimension Archiv4 Batch3"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD]
+        zone_type : *DIMENSION4
+      - zone_id: 4
+        name: "Dimension Archiv4 Batch4"
+        zone_items: [1,2,3,4,5]
+        rows: 10
+        columns: 5
+        phase_order: [*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_UNLOAD] 
+        zone_type : *DIMENSION4
+  
+  - zone_id: &dimension_racks 12
+    name: "Dimension Racks"
+    zone_items: [1, 2,3,4,5,6]
+    rows: 6
+    columns: 6
+    subzones:
+      - zone_id: 1
+        name: "Dimension Racks Batch1"
+        zone_items: [[1,2], [2,2], [3,2], [4,2], [5,2], [6,2]]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD] 
+        zone_type: *BIGS       
+      - zone_id: 2
+        name: "Dimension Racks Batch2"
+        zone_items: [[1,2], [2,2], [3,2], [4,2], [5,2], [6,2]]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        zone_type: *BIGS
+      - zone_id: 3
+        name: "Dimension Racks Batch3"
+        zone_items: [[1,2], [2,2], [3,2], [4,2], [5,2], [6,2]]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD] 
+        zone_type: *BIGS        
+      - zone_id: 4
+        name: "Dimension Racks Batch4"
+        zone_items: [[1,3], [2,3], [3,3], [4,3], [5,3], [6,3]]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        zone_type: *MEDIUMS 
+      - zone_id: 5
+        name: "Dimension Racks Batch5"
+        zone_items: [[1,6], [2,6], [3,6]] #, 4, 5, 6]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        zone_type: *CONTROLS
+      - zone_id: 6
+        name: "Dimension Racks Batch6"
+        zone_items:  [[1,6], [2,6], [3,6]] #, 4, 5, 6]
+        rows: 1
+        columns: 6
+        phase_order: [*READY_TO_LOAD,*LOADING,*READAY_TO_PROCESS,*IN_PROCESS,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        zone_type: *CONTROLS
+
+  - zone_id: &dimension_machine 13
+    name: "Dimension Machine"
+    zone_items: [1] 
+    subzones:
+      - zone_id: 1
+        name: "Dimension Machine 1"
+        run_time: 30
+        zone_items: [1, 2, 3, 4, 5, 6]
+        phase_order: [*READY_TO_LOAD,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        is_active: 1
+        stand_by_time: 3300
+        wait_time: 0
+        gui_id: 7
+
+      - zone_id: 2
+        name: "Dimension Machine 2"
+        run_time: 20
+        zone_items: [1, 2, 3, 4, 5, 6]
+        phase_order: [*READY_TO_LOAD,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*READY_TO_LOAD]
+        is_active: 1
+        stand_by_time: 3300
+        wait_time: 0
+        gui_id: 6
+
+  - zone_id: &dimension_archiv_exchange 15
+    name: "Dimension Exchange archiv"
+    subzones: []
+    zone_items: [1,2,3,4,5]
+    phase_order: [*READY_TO_LOAD,*LOADING,*READY_TO_UNLOAD,*PRE_PROCESS,*READY_TO_LOAD]
+    rows: 10
+    columns: 5
+    stateful: 1
+    is_exchange: 1
+  
+  - zone_id: &coagulation_archiv_exchange 16
+    name: "Coagulation Archive Exchange"
+    subzones: []
+    zone_items: [1,2,3,4,5]
+    phase_order: [*READY_TO_LOAD,*LOADING,*READY_TO_UNLOAD,*PRE_PROCESS,*READY_TO_LOAD]
+    rows: 10
+    columns: 5
+    stateful: 1
+    is_exchange: 1
+  
+  - zone_id: &sysmex_archiv 17
+    name: "Sysmex Archiv"
+    subzones: []
+    zone_items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 
+      81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116,
+      117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
+      151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184,
+      185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200]
+    phase_order: [*LOADING]
+    rows: 10
+    columns: 20
+    stateful: 1
+    capacity_check: 1
+  
+  - zone_id: &external_pallet 18
+    name: "External Pallet"
+    subzones: []
+    zone_items: [1,2,3,4,5]
+    phase_order: [*LOADING]
+    rows: 10
+    columns: 5
+    capacity_check: 1
+  
+  - zone_id: &dust_bin 19
+    name: "Dust Bin Pallet"
+    subzones: []
+    zone_items: [1,2,3,4,5]
+    phase_order: [*READY_TO_LOAD,*LOADING,*READY_TO_UNLOAD,*READY_TO_LOAD]
+    rows: 10
+    columns: 5
+    stateful: 1
+
+  - zone_id: &transport_archiv 20
+    name: "Transport Archiv"
+    subzones: []
+    zone_items: [1,2,3,4,5]
+    phase_order: [*PRE_PROCESS,*IN_PROCESS,*POST_PROCESS,*PRE_PROCESS]
+    rows: 10
+    columns: 5
+    stateful: 1
+
+  - zone_id: &ortho_machine 21
+    name: "Ortho Machine"
+    subzones:
+      - zone_id: 1
+        name: "Ortho Machine"
+        run_time: 20
+        zone_items: [[1, 2],[2, 2],[3, 2],[4, 2],[5, 2],[6, 2],[7, 2],[8, 2],[9, 5],[10, 5],[11, 5],[12, 5],[13, 5],[14, 5],[15, 5],[16, 5],[17, 5],[18, 5],[19, 5],[20, 5],[21, 5],[22, 5],[23, 5],[24, 5]]
+        phase_order: [*READY_TO_LOAD,*LOADING,*PRE_PROCESS,*READY_TO_START,*IN_PROCESS,*READY_TO_STOP,*READY_TO_UNLOAD,*UNLOADING,*READY_TO_LOAD]
+        is_active: 1
+        stand_by_time: 3300
+        wait_time: 0
+        gui_id: 5
+        unload_wait_time: 5
+  
+  - zone_id: &ortho_exchange_archiv 22
+    name: "Ortho Archive Exchange"
+    subzones: []
+    zone_items: [1,2,3,4,5]  
+    phase_order: [*LOADING]
+    rows: 10
+    columns: 5
+    stateful: 1
+
+zone_transitions:
+
+#camera1 pick up
+
+  - transition_id: &camera1_camera2_pilots 1
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [81] #camera2_centri_racks_dimm_big
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*PILOT]
+    item_type: *VIAL
+    type: [*PILOT_TYPE]
+    no_curr_phase_change: 1
+    pre_operations: ["trigger_camera1"]
+  
+  - transition_id: &camera1_camera2_ortho 2
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [10] #camera2_centri_racks_ortho
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BIGRED]
+    item_type: *VIAL
+    type: [*BIG]
+    no_curr_phase_change: 1
+    pre_checks: ["can_pick_vial"]
+    pre_operations: ["trigger_camera1"]
+
+  - transition_id: &camera1_camera2_dimm_big 3
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [7] #camera2_centri_racks_dimm_big
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BROWN,*ORANGE]
+    item_type: *VIAL
+    type: [*BIG]
+    no_curr_phase_change: 1
+    pre_checks: ["can_pick_vial"]
+    pre_operations: ["trigger_camera1"]
+
+  - transition_id: &camera1_camera2_dimm_medium 4
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [8] #camera2_centri_racks_dimm_medium
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*YELLOW]
+    item_type: *VIAL
+    type: [*MEDIUM]
+    no_curr_phase_change: 1
+    pre_checks: ["can_pick_vial"]
+    pre_operations: ["trigger_camera1"]
+  
+  - transition_id: &camera1_camera2_cs 5
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [9] #camera2_centri_racks_cs
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*GREEN]
+    item_type: *VIAL
+    type: [*SMALL]
+    no_curr_phase_change: 1
+    pre_checks: ["can_pick_vial"]
+    pre_operations: ["trigger_camera1"]
+  
+  - transition_id: &camera1_camera2_sysmex 6
+    curr_zone: *camera1
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [11] #camera2_sysmex_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*RED]
+    item_type: *VIAL
+    type: [*SMALL]
+    no_curr_phase_change: 1
+    pre_operations: ["trigger_camera1"]
+    pre_checks: ["is_not_waiting_period","can_pick_vial"]
+    pre_tasks: ["open_door_new"]
+
+#camera2
+
+  - transition_id: &camera2_centri_racks_dimm_big 7
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BROWN,*ORANGE]
+    transit: *DIMM
+    centrifuged: 0
+    type: [*BIG]
+    item_type: *VIAL
+    orig_transitioins: [*camera1_camera2_dimm_big]
+    no_next_phase_change: 1
+    target_zone: *centrifuge_machine 
+
+  - transition_id: &camera2_centri_racks_dimm_medium 8
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*YELLOW]
+    transit: *DIMM
+    centrifuged: 0
+    type: [*MEDIUM]
+    item_type: *VIAL
+    orig_transitioins: [*camera1_camera2_dimm_medium]  #camera1_camera2_dimm_big
+    no_next_phase_change: 1
+    target_zone: *centrifuge_machine 
+
+  - transition_id: &camera2_centri_racks_cs 9
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*GREEN]
+    transit: *COAG
+    centrifuged: 0
+    type: [*SMALL]
+    item_type: *VIAL
+    orig_transitioins: [*camera1_camera2_cs]  #camera1_camera2_dimm_big
+    target_zone: *centrifuge_machine   
+
+  - transition_id: &camera2_centri_racks_ortho 10
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BIGRED]
+    transit: [*BLGR,*CRST]
+    centrifuged: 0
+    type: [*BIG]
+    item_type: *VIAL
+    orig_transitioins: [*camera1_camera2_ortho]  #camera1_camera2_dimm_big
+    no_next_phase_change: 1
+    target_zone: *centrifuge_machine 
+
+  - transition_id: &camera2_sysmex_machine 11
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *sysmex_machine
+    next_phases: [*LOADING,*READY_TO_LOAD,*PRE_PROCESS]
+    color: [*RED]
+    transit: *SYSM
+    item_type: *VIAL
+    type: *SMALL
+    orig_transitioins: [*camera1_camera2_sysmex] #camera1_camera2_sysmex
+    pre_checks: ["is_next_zone_active"]
+    #post_operations: ["calculate_runtime"]
+
+  - transition_id: &camera2_externals 13
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *external_pallet
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *EXTS
+    item_type: *VIAL
+    no_next_phase_change: 1 
+
+#centri pick up
+
+  - transition_id: &centrifuge_racks_camera2_ortho 14
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [80] #camera2_dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BIGRED]
+    transit: [*BLGR,*CRST]
+    centrifuged: 1
+    type: [*BIG]
+    item_type: *VIAL
+    no_curr_phase_change: 1
+    pre_checks : ["is_not_down_time","open_ortho_door"]
+
+  - transition_id: &centrifuge_racks_camera2_dimension_big 15
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [19] #camera2_dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BROWN,*ORANGE]
+    transit: *DIMM
+    centrifuged: 1
+    type: [*BIG]
+    item_type: *VIAL
+    no_curr_phase_change: 1
+  
+  - transition_id: &centrifuge_racks_camera2_dimension_med 16
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [18] #camera2_dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*YELLOW]
+    transit: *DIMM
+    centrifuged: 1
+    type: [*MEDIUM]
+    item_type: *VIAL
+    no_curr_phase_change: 1
+
+  - transition_id: &centrifuge_racks_camera2_cs 17
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *camera2
+    possible_next_transitions: [20] #camera2_cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*GREEN]
+    transit: *COAG
+    centrifuged: 1
+    type: *SMALL
+    item_type: *VIAL
+    no_curr_phase_change: 1
+
+  - transition_id: &camera2_dimension_racks_medium 18 
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*YELLOW]
+    transit: *DIMM
+    centrifuged: 1
+    item_type: *VIAL
+    type: [*MEDIUM]
+    orig_transitioins: [*centrifuge_racks_camera2_dimension_med] 
+    target_zone: *dimension_machine
+    zone_type: *MEDIUMS
+  
+  - transition_id: &camera2_dimension_racks_big 19
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BROWN,*ORANGE]
+    transit: *DIMM
+    centrifuged: 1
+    item_type: *VIAL
+    type: [*BIG]
+    orig_transitioins: [*centrifuge_racks_camera2_dimension_big] 
+    target_zone: *dimension_machine
+    zone_type: *BIGS
+
+  - transition_id: &camera2_cs_racks 20
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: *GREEN
+    transit: *COAG
+    centrifuged: 1
+    item_type: *VIAL 
+    type: *SMALL
+    orig_transitioins: [*centrifuge_racks_camera2_cs]
+    target_zone: *cs_machine
+
+  - transition_id: &camera2_fehler 21
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *fehler
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["send_error_call"]
+  
+  - transition_id: &counter_weights_centrifuge_racks_small 22
+    curr_zone: *counter_weights
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks  
+    next_phases: [*PRE_PROCESS]
+    item_type: *VIAL
+    type: [*SMALL,*MEDIUM]
+    pre_checks: ["is_counter_needed"]
+    no_next_phase_change: 1
+    no_curr_phase_change: 1
+  
+  - transition_id: &counter_weights_centrifuge_racks_big 23
+    curr_zone: *counter_weights
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*PRE_PROCESS]
+    item_type: *VIAL
+    type: [*BIG]
+    pre_checks: ["is_counter_needed"]
+    no_curr_phase_change: 1    
+  
+  - transition_id: &centrifuge_racks_counter_weights_small 24
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *counter_weights
+    next_phases: [*READY_TO_UNLOAD]
+    color: *COUNTER
+    type: *SMALL
+    item_type: *VIAL
+    no_next_phase_change: 1
+    no_curr_phase_change: 1
+    pre_checks: ["can_unload_counter"]
+  
+  - transition_id: &centrifuge_racks_counter_weights_big 25
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *counter_weights
+    next_phases: [*READY_TO_UNLOAD]
+    color: *COUNTER
+    type: *BIG
+    item_type: *VIAL
+    no_next_phase_change: 1
+    pre_checks: ["can_unload_counter"]
+
+  - transition_id: &centrifuge_racks_centrifuge_machine 26
+    curr_zone: *centrifuge_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *centrifuge_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    post_operations: ["update_place_index","update_centri_count"]
+  
+  - transition_id: &camera2_ortho_machine 80
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *ortho_machine
+    next_phases: [*READY_TO_LOAD,*LOADING]
+    color: *BIGRED
+    transit: [*BLGR,*CRST]
+    centrifuged: 1
+    item_type: *VIAL 
+    type: *BIG
+    orig_transitioins: [*centrifuge_racks_camera2_ortho]
+    #pre_checks: ["is_next_zone_active"]
+    post_operations : ["set_crosstest_pilots","set_ortho_start1"]
+    pre_tasks: ["set_ortho_rotor"]
+
+#machine loading
+
+  - transition_id: &dimension_racks_dimension_machine_big 27
+    curr_zone: *dimension_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["is_next_zone_active","is_not_down_time"]
+    zone_type: *BIGS
+
+  - transition_id: &cs_racks_cs_machine 29
+    curr_zone: *cs_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *cs_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["is_next_zone_active","is_not_down_time"]  
+    #post_operations: ["calculate_runtime"]
+
+#machine unloading
+
+  - transition_id: &centrifuge_machine_centrifuge_racks 31
+    curr_zone: *centrifuge_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *centrifuge_racks
+    next_phases: [*IN_PROCESS]
+    item_type: *ZONE
+    post_operations: ["set_centrifuged","update_pick_index"]
+  
+  - transition_id: &dimension_machine_dimension_racks_mediums 32
+    curr_zone: *dimension_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_dimenstion_stop"]
+    zone_type: *MEDIUMS
+    post_operations: ["reset_zone_type"]
+  
+  - transition_id: &dimension_machine_dimension_racks_bigs 33
+    curr_zone: *dimension_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_dimenstion_stop"]
+    zone_type: *BIGS
+    post_operations: ["reset_zone_type"]
+   
+  - transition_id: &cs_machine_cs_racks 34
+    curr_zone: *cs_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *cs_racks
+    next_phases: [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["check_sensor_test"]
+    post_operations : ["set_decapped","update_pick_index"]
+
+#archives  
+
+  - transition_id: &dimension_racks_dimension_archiv_exchange 36
+    curr_zone: *dimension_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv_exchange
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["update_emergency","progress_next_phase","export_data"]
+
+  - transition_id: &sysmex_machine_sysmex_archiv 37
+    curr_zone: *sysmex_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *sysmex_archiv
+    next_phases: [*LOADING]
+    item_type: *VIAL
+    post_operations: ["export_data"]
+    no_next_phase_change: 1
+    pre_tasks: ["open_door_curr","update_emergency","export_data"]
+  
+  - transition_id: &sysmex_machine_sysmex_machine 38
+    curr_zone: *sysmex_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *sysmex_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *SYSM
+    no_curr_phase_change : 1
+    pre_tasks: ["open_door_curr"]
+    no_next_phase_change: 1
+  
+  - transition_id: &cs_racks_coagulation_archiv_exchange 39
+    curr_zone: *cs_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *coagulation_archiv_exchange
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    no_next_phase_change: 1
+    pick_index: 0
+    post_operations: ["progress_next_phase","export_data"]
+  
+  - transition_id: &ortho_machine_transport_archiv 35
+    curr_zone: *ortho_machine
+    curr_phases: [*UNLOADING]
+    next_zone: *transport_archiv
+    next_phases: [*IN_PROCESS]
+    item_type: *VIAL
+    #transit: *ARCH
+    post_operations: ["export_data"]
+    pre_tasks: ["set_ortho_rotor_unload"]
+
+#archiv rack swap
+
+  - transition_id: &dimension_archiv_exchange_dimension_archiv1 40
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv1
+    next_phases:  [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["update_emergency","set_added_time","export_data"]
+  
+  - transition_id: &dimension_archiv_exchange_dimension_archiv2 41
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv2
+    next_phases:  [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["update_emergency","set_added_time","export_data"]
+  
+  - transition_id: &dimension_archiv_exchange_dimension_archiv3 42
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv3
+    next_phases:  [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["update_emergency","set_added_time","export_data"]
+  
+  - transition_id: &coagulation_archiv_exchange_coagulation_archiv 43
+    curr_zone: *coagulation_archiv_exchange
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *coagulation_archiv
+    next_phases:  [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["update_emergency","set_added_time","export_data"]
+  
+  - transition_id: &dimension_archiv_exchange_dimension_archiv4 44
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv4
+    next_phases:  [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["update_emergency","set_added_time","export_data"]  
+  
+  - transition_id: &dimension_archiv1_dimension_archiv_exchange 46
+    curr_zone: *dimension_archiv1
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_archiv_exchange
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"] 
+  
+  - transition_id: &dimension_archiv2_dimension_archiv_exchange 47
+    curr_zone: *dimension_archiv2
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_archiv_exchange
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"] 
+  
+  - transition_id: &dimension_archiv3_dimension_archiv_exchange 48
+    curr_zone: *dimension_archiv3
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_archiv_exchange
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"] 
+  
+  - transition_id: &coagulation_archiv_coagulation_archiv_exchange 49
+    curr_zone: *coagulation_archiv
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *coagulation_archiv_exchange
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"] 
+  
+  - transition_id: &dimension_archiv4_dimension_archiv_exchange 50
+    curr_zone: *dimension_archiv4
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_archiv_exchange
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+
+#retests
+
+  - transition_id: &dimension_archiv1_transport_archiv 52
+    curr_zone: *dimension_archiv1
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*DIMM,*EXTS]
+    pre_checks: ["can_open_archiv","retests_exists","open_door_retest"]
+    post_operations: ["export_data"]
+
+  - transition_id: &dimension_archiv2_transport_archiv 53
+    curr_zone: *dimension_archiv2
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*DIMM,*EXTS]
+    pre_checks: ["can_open_archiv","retests_exists","open_door_retest"]
+    post_operations: ["export_data"]
+    
+  - transition_id: &dimension_archiv3_transport_archiv 54
+    curr_zone: *dimension_archiv3
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*DIMM,*EXTS]
+    pre_checks: ["can_open_archiv","retests_exists","open_door_retest"]
+    post_operations: ["export_data"]
+    
+  - transition_id: &coagulation_archiv_transport_archiv 55
+    curr_zone: *coagulation_archiv
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*COAG,*EXTS]
+    pre_checks: ["can_open_archiv","retests_exists","open_door_retest"]
+    post_operations: ["export_data"]
+    zone_type: *COAGULATIONS
+    
+  - transition_id: &dimension_archiv4_transport_archiv 56
+    curr_zone: *dimension_archiv4
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*DIMM,*EXTS]
+    pre_checks: ["can_open_archiv","retests_exists","open_door_retest"]
+    post_operations: ["export_data"]
+    
+  - transition_id: &ortho_archiv_transport_archiv 57
+    curr_zone: *ortho_archiv
+    curr_phases: [*READAY_TO_PROCESS] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","is_ortho_ready_to_unload1"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["export_data"]
+    zone_type: *SAMPLES
+
+  - transition_id: &dimension_archiv_exchange_dimension_racks_big 58
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*LOADING]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *DIMM
+    type: [*BIG]
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    target_zone: *dimension_machine
+    post_operations: ["set_decapped","export_data"]
+    #zone_type: *BIGS
+
+  - transition_id: &dimension_racks_dimension_racks 59
+    curr_zone: *dimension_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    type: *BIG
+    transit: *DIMM
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    target_zone: *dimension_machine
+    zone_type: *BIGS
+
+  - transition_id: &cs_racks_cs_racks 60
+    curr_zone: *cs_racks
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *COAG
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    target_zone: *cs_machine
+
+  - transition_id: &coagulation_archiv_exchange_cs_racks 61
+    curr_zone: *coagulation_archiv_exchange
+    curr_phases: [*LOADING]
+    next_zone: *cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *COAG
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    target_zone: *cs_machine
+    post_operations: ["set_decapped","export_data"]
+
+  - transition_id: &sysmex_archiv_sysmex_machine 62
+    curr_zone: *sysmex_archiv
+    curr_phases: [*LOADING]
+    next_zone: *sysmex_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *SYSM
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    post_operations: ["export_data"]
+  
+  - transition_id: &dimension_archiv_exchange_externals 64
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*LOADING]
+    next_zone: *external_pallet
+    next_phases: [*LOADING]
+    transit: *EXTS
+    item_type: *VIAL
+    no_next_phase_change: 1 
+    no_curr_phase_change: 1   
+    post_operations: ["export_data"]
+  
+  - transition_id: &coagulation_archiv_exchange_externals 65
+    curr_zone: *coagulation_archiv_exchange
+    curr_phases: [*LOADING]
+    next_zone: *external_pallet
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *EXTS
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+  
+  - transition_id: &sysmex_archiv_externals 66
+    curr_zone: *sysmex_archiv
+    curr_phases: [*LOADING]
+    next_zone: *external_pallet
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *EXTS
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+
+#dustbin
+
+  - transition_id: &dimension_archiv1_dust_bin 67
+    curr_zone: *dimension_archiv1
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    disposable: 1
+
+  - transition_id: &dimension_archiv2_dust_bin 68
+    curr_zone: *dimension_archiv2
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    disposable: 1
+
+  - transition_id: &dimension_archiv3_dust_bin 69
+    curr_zone: *dimension_archiv3
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    disposable: 1
+
+  - transition_id: &coagulation_archiv_dust_bin 70
+    curr_zone: *coagulation_archiv
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    zone_type: *COAGULATIONS
+    disposable: 1
+
+  - transition_id: &dimension_archiv4_dust_bin 71
+    curr_zone: *dimension_archiv4
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    disposable: 1
+  
+  - transition_id: &ortho_archiv_dust_bin 72
+    curr_zone: *ortho_archiv
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv","check_disposal_time"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["close_common_door_curr","export_data"]
+    zone_type: *SAMPLES
+    disposable: 1
+  
+  - transition_id: &transport_archiv_dust_bin 73
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *dust_bin
+    next_phases:  [*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["check_disposal_time","open_door_retest"]
+    post_operations: ["export_data"]
+
+  - transition_id: &transport_archiv_dimension_archiv1 74
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *dimension_archiv1
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE    
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *DIMENSION1
+
+  - transition_id: &transport_archiv_dimension_archiv2 75
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *dimension_archiv2
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *DIMENSION2
+  
+  - transition_id: &transport_archiv_dimension_archiv3 76
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *dimension_archiv3
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *DIMENSION3
+  
+  - transition_id: &transport_archiv_coagulation_archiv 77
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *coagulation_archiv
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *COAGULATIONS
+  
+  - transition_id: &transport_archiv_dimension_archiv4 78
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *dimension_archiv4
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *DIMENSION4
+
+  - transition_id: &transport_archiv_ortho_archiv 79
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *ortho_archiv
+    next_phases:  [*IN_PROCESS,*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","fill_ortho_archiv","set_added_time","export_data"]
+    zone_type: *SAMPLES
+
+#pilots
+  - transition_id: &camera2_transport_archiv 81
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *transport_archiv
+    next_phases:  [*IN_PROCESS]
+    item_type: *VIAL
+    color: *PILOT
+    orig_transitioins: [*camera1_camera2_pilots]
+    zone_type: *PILOTS
+    post_operations: ["progress_transport_archive","export_data"]
+    no_next_phase_change: 1
+  
+  - transition_id: &ortho_archiv_transport_archiv_pilots 82
+    curr_zone: *ortho_archiv
+    curr_phases: [*READAY_TO_PROCESS] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    pre_operations: ["trigger_camera1","cleanup_pilot_racks"]
+    pre_checks: ["camera1_pilots_available"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["export_data"]
+    zone_type: *PILOTS
+  
+  - transition_id: &transport_archiv_ortho_archiv_pilots 83
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *ortho_archiv
+    next_phases:  [*IN_PROCESS,*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","fill_ortho_archiv","export_data"]
+    zone_type: *PILOTS
+  
+  - transition_id: &transport_archiv_camera2_pilots 84
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *camera2
+    possible_next_transitions: [85] #camera2_ortho_machine_pilots
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*PILOT]
+    type: [*PILOT_TYPE]
+    transit: [*CRST]
+    item_type: *VIAL
+    no_curr_phase_change: 1
+  
+  - transition_id: &camera2_ortho_machine_pilots 85
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *ortho_machine
+    next_phases: [*PRE_PROCESS]
+    color: *PILOT
+    transit: [*CRST]
+    item_type: *VIAL 
+    type: *PILOT_TYPE
+    orig_transitioins: [*transport_archiv_camera2_pilots] 
+    pre_tasks: ["set_ortho_rotor"]
+    post_operations: ["set_ortho_start1"]
+    no_next_phase_change: 1
+  
+  - transition_id: &ortho_archiv_transport_archiv_ortho_machine 86
+    curr_zone: *ortho_archiv
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    color: *PILOT
+    transit: [*CRST]
+    type: *PILOT_TYPE
+    pre_checks: ["is_not_down_time","can_open_archiv","cross_tests_needed","open_common_door_curr"]
+    post_operations: ["export_data"]
+    zone_type: *PILOTS
+  
+  - transition_id: &ortho_archiv_transport_archiv_ortho_retest 87
+    curr_zone: *ortho_archiv
+    curr_phases: [] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    color: [*BIGRED]
+    transit: [*BLGR,*CRST]
+    type: *BIG
+    pre_checks: ["is_not_down_time","can_open_archiv","retests_exists","is_ortho_ready_to_load"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["export_data"]
+    zone_type: *SAMPLES
+  
+  - transition_id: &transport_archiv_ortho_machine_retest 88
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *ortho_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BIGRED]
+    transit: [*BLGR,*CRST]
+    item_type: *VIAL 
+    type: *BIG
+    post_operations : ["set_decapped","set_crosstest_pilots","set_ortho_start1"]
+    pre_tasks: ["set_ortho_rotor"]
+    no_next_phase_change: 1
+
+  - transition_id: &dimension_machine_dimension_machine 89
+    curr_zone: *dimension_machine
+    curr_phases: [*PRE_PROCESS] 
+    next_zone: *dimension_machine
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    no_next_phase_change: 1
+    no_curr_phase_change: 1
+  
+  - transition_id: &transport_archiv_dimension_racks_big 90
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *DIMM
+    color: [*BROWN,*ORANGE]
+    item_type: *VIAL
+    type: [*BIG]
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+    target_zone: *dimension_machine
+
+  - transition_id: &transport_archiv_cs_racks 91
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *COAG
+    color: *GREEN
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+    target_zone: *cs_machine
+
+  - transition_id: &transport_archiv_externals 92
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *external_pallet
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *EXTS
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+
+#controls
+
+  - transition_id: &coagulation_archiv_transport_archiv_controls 93
+    curr_zone: *coagulation_archiv
+    curr_phases: [*READY_TO_UNLOAD] 
+    next_zone: *transport_archiv
+    next_phases:  [*PRE_PROCESS]
+    item_type: *ZONE
+    transit: [*COAG,*DIMM,*SYSM]
+    color: [*CONTROL]
+    pre_checks: ["can_open_archiv","is_controls_time","is_controls_available"]
+    pre_tasks: ["open_common_door_curr"]
+    post_operations: ["export_data"]
+    zone_type : *CONTROLS
+
+  - transition_id: &transport_archiv_dimension_controls 94
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*CONTROL]
+    transit: [*DIMM]
+    item_type: *VIAL
+    no_curr_phase_change: 1
+    pre_checks : ["is_controls_zone"]
+    zone_type: *CONTROLS
+
+  - transition_id: &transport_archiv_cs_controls 95
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *cs_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*CONTROL]
+    transit: [*COAG]
+    item_type: *VIAL
+    pre_checks : ["is_controls_zone"]
+    post_operations: ["progress_cs_racks_controls"]
+    no_next_phase_change: 1
+
+  - transition_id: &transport_archiv_sysmex_controls 96
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *sysmex_archiv
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*CONTROL]
+    transit: [*SYSM]
+    item_type: *VIAL
+    no_curr_phase_change: 1 
+    pre_checks : ["is_controls_zone"]   
+
+  - transition_id: &ortho_machine_ortho_machine 97
+    curr_zone: *ortho_machine
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *ortho_machine
+    next_phases:  [*POST_PROCESS]
+    item_type: *ZONE
+    no_next_phase_change: 1
+    no_curr_phase_change: 1  
+
+  - transition_id: &close_ortho_door 98
+    curr_zone: *ortho_machine
+    curr_phases: [*POST_PROCESS]
+    next_zone: *ortho_machine
+    next_phases: [*POST_PROCESS]
+    item_type: *ZONE
+    pre_operations: ["close_ortho_door"]
+  
+  - transition_id: &dimension_racks_dimension_machine_medium 99
+    curr_zone: *dimension_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    zone_type: *MEDIUMS
+    pre_checks: ["is_next_zone_active","is_not_down_time"]
+    
+  
+  - transition_id: &transport_archiv_coagulation_archiv_controls 100
+    curr_zone: *transport_archiv
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *coagulation_archiv
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    post_operations: ["reset_zone_type","close_common_door_next","export_data"]
+    zone_type: *CONTROLS
+  
+  - transition_id: &dimension_racks_dimension_machine_controls 101
+    curr_zone: *dimension_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *dimension_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    zone_type: *CONTROLS
+    control_process_check: 1
+    pre_checks: ["is_next_zone_active","is_not_down_time"]
+    post_operations: ["set_controls_processed"]
+
+  - transition_id: &dimension_machine_dimension_racks_controls 102
+    curr_zone: *dimension_machine
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_racks
+    next_phases: [*IN_PROCESS]
+    item_type: *ZONE
+    pre_checks: ["can_dimenstion_stop"]
+    zone_type: *CONTROLS
+    post_operations: ["reset_zone_type"]
+  
+  - transition_id: &transport_archiv_dimension_racks_medium 103
+    curr_zone: *transport_archiv
+    curr_phases: [*IN_PROCESS]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    transit: *DIMM
+    color: [*YELLOW]
+    item_type: *VIAL
+    type: [*MEDIUM]
+    post_operations: ["export_data"]
+    target_zone: *dimension_machine
+    
+  
+  - transition_id: &sysmex_archiv_sysmex_machine_controls 104
+    curr_zone: *sysmex_archiv
+    curr_phases: [*LOADING]
+    next_zone: *sysmex_machine
+    next_phases: [*LOADING,*READY_TO_LOAD,*PRE_PROCESS]
+    color: [*CONTROL]
+    transit: *SYSM
+    item_type: *VIAL
+    pre_checks: ["is_not_waiting_period"]
+    pre_tasks: ["open_door_new"]
+    no_next_phase_change: 1
+    post_operations: ["set_controls_processed","progress_next_phase_strictly"]
+    control_process_check: 1
+  
+  - transition_id: &transport_archiv_change 105
+    curr_zone: *transport_archiv
+    curr_phases: [*UNLOAD] 
+    next_zone: *transport_archiv
+    next_phases:  [*UNLOAD]
+    item_type: *ZONE
+    pre_operations: ["progress_transport"]
+  
+  - transition_id: &cs_racks_cs_machine_controls 112
+    curr_zone: *cs_racks
+    curr_phases: [*READAY_TO_PROCESS]
+    next_zone: *cs_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *ZONE
+    pre_checks: ["is_next_zone_active","is_not_down_time"]
+    post_operations: ["calculate_runtime","set_controls_processed"]
+    control_process_check: 1
+
+#Manual archiv
+
+  - transition_id: &camera2_dimension_archiv_exchange 106
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv_exchange
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *DIMM-ARCH
+    no_next_phase_change: 1
+    post_operations: ["set_centrifuged_archiv","progress_next_phase","export_data"]
+  
+  - transition_id: &camera2_coagulation_archiv_exchange 107
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *coagulation_archiv_exchange
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *COAG-ARCH
+    no_next_phase_change: 1
+    post_operations: ["set_centrifuged_archiv","progress_next_phase","export_data"]
+
+  - transition_id: &camera2_sysmex_archiv 108
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *sysmex_archiv
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *SYSM-ARCH
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+  
+  - transition_id: &camera2_ortho_exchange_archiv 109
+    curr_zone: *camera2
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *ortho_exchange_archiv
+    next_phases: [*LOADING]
+    item_type: *VIAL
+    transit: *ORTH-ARCH
+    no_next_phase_change: 1
+    post_operations: ["set_centrifuged_archiv","export_data"]
+  
+  - transition_id: &ortho_machine_ortho_exchange_archiv 110
+    curr_zone: *ortho_machine
+    curr_phases: [*READY_TO_UNLOAD,*UNLOADING]
+    next_zone: *ortho_exchange_archiv
+    next_phases: [*LOADING]
+    item_type: *VIAL
+    no_next_phase_change: 1
+    post_operations: ["export_data"]
+    pre_tasks: ["set_ortho_rotor_unload"]
+    pre_checks: ["is_ortho_ready_to_unload1"]
+  
+  - transition_id: &ortho_exchange_archiv_ortho_machine 111
+    curr_zone: *ortho_exchange_archiv
+    curr_phases: [*LOADING]
+    next_zone: *ortho_machine
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    color: [*BIGRED]
+    transit: [*BLGR,*CRST]
+    item_type: *VIAL 
+    type: *BIG
+    pre_checks : ["is_not_down_time","open_ortho_door"]
+    post_operations : ["set_decapped","set_crosstest_pilots"]
+    pre_tasks: ["set_ortho_rotor"]
+    no_next_phase_change: 1
+  
+  - transition_id: &ortho_exchange_archiv_transport_archiv 113
+    curr_zone: *ortho_exchange_archiv
+    curr_phases: [*LOADING]
+    next_zone: *transport_archiv
+    next_phases: [*IN_PROCESS]
+    transit: [*ORTH-ARCH,*ARCH]
+    item_type: *VIAL
+    zone_type: *SAMPLES
+    no_next_phase_change: 1
+
+#dustbin reverse
+
+  - transition_id: &dust_bin_dimension_archiv1 114
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv1
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *DIMENSION1
+  
+  - transition_id: &dust_bin_dimension_archiv2 115
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv2
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *DIMENSION2
+  
+  - transition_id: &dust_bin_dimension_archiv3 116
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv3
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *DIMENSION3
+  
+  - transition_id: &dust_bin_dimension_archiv4 117
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *dimension_archiv3
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *DIMENSION4
+  
+  - transition_id: &dust_bin_coagulation_archiv 118
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *coagulation_archiv
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *COAGULATIONS
+  
+  - transition_id: &dust_bin_ortho_archiv 119
+    curr_zone: *dust_bin
+    curr_phases: [*READY_TO_UNLOAD]
+    next_zone: *ortho_archiv
+    next_phases:  [*UNLOADING]
+    item_type: *ZONE
+    pre_checks: ["can_open_archiv"]
+    pre_tasks: ["open_common_door_next"]
+    post_operations: ["zone_reset","close_common_door_next","export_data"]
+    zone_type: *SAMPLES
+  
+  - transition_id: &dimension_archiv_exchange_dimension_racks_medium 120
+    curr_zone: *dimension_archiv_exchange
+    curr_phases: [*LOADING]
+    next_zone: *dimension_racks
+    next_phases: [*LOADING,*READY_TO_LOAD]
+    item_type: *VIAL
+    transit: *DIMM
+    type: [*MEDIUM]
+    no_next_phase_change : 1
+    no_curr_phase_change: 1
+    target_zone: *dimension_machine
+    post_operations: ["set_decapped","export_data"]
+    #zone_type: *MEDIUMS
+  
+  - transition_id: &cs_machine_cs_machine 121
+    curr_zone: *cs_machine
+    curr_phases: [*POST_PROCESS] 
+    next_zone: *cs_machine
+    next_phases:  [*POST_PROCESS]
+    item_type: *ZONE
+    no_next_phase_change: 1
+    no_curr_phase_change: 1 
+
+transitions_orders:
+  - transition_order_id: 1
+    transition_orders:
+    - *Robot1:  [
+        *camera2_ortho_machine_pilots,
+        *camera2_ortho_machine,
+        *camera2_transport_archiv,
+        *camera2_dimension_racks_big,
+        *camera2_dimension_racks_medium,
+        *camera2_cs_racks,
+        *camera2_centri_racks_ortho,
+        *camera2_centri_racks_dimm_big,  
+        *camera2_centri_racks_dimm_medium,
+        *camera2_centri_racks_cs,  
+        *camera2_sysmex_machine, 
+        *camera2_externals,
+        *camera2_dimension_archiv_exchange,
+        *camera2_coagulation_archiv_exchange,
+        *camera2_sysmex_archiv,
+        *camera2_ortho_exchange_archiv,
+        *camera2_fehler, 
+        *cs_machine_cs_machine,
+        *dimension_archiv1_dimension_archiv_exchange,
+        *dimension_archiv2_dimension_archiv_exchange,
+        *dimension_archiv3_dimension_archiv_exchange,
+        *dimension_archiv4_dimension_archiv_exchange,
+        *coagulation_archiv_coagulation_archiv_exchange,
+        *transport_archiv_dimension_archiv1, 
+        *transport_archiv_dimension_archiv2, 
+        *transport_archiv_dimension_archiv3,         
+        *transport_archiv_dimension_archiv4,
+        *transport_archiv_coagulation_archiv_controls,
+        *transport_archiv_coagulation_archiv,  
+        *transport_archiv_ortho_archiv_pilots,
+        *transport_archiv_sysmex_controls,
+        *transport_archiv_dimension_controls,
+        *transport_archiv_cs_controls, 
+        *transport_archiv_dimension_racks_big,
+        *transport_archiv_dimension_racks_medium,
+        *transport_archiv_cs_racks,
+        *transport_archiv_externals,
+        *ortho_exchange_archiv_ortho_machine,
+        *transport_archiv_ortho_machine_retest,
+        *ortho_archiv_transport_archiv_pilots,     
+        *camera1_camera2_pilots,
+        *centrifuge_racks_camera2_ortho,        
+        *transport_archiv_camera2_pilots,
+        *coagulation_archiv_transport_archiv_controls,
+        *ortho_archiv_transport_archiv_ortho_machine,
+        *ortho_archiv_transport_archiv_ortho_retest,        
+        *transport_archiv_ortho_archiv,        
+        *ortho_archiv_transport_archiv,  
+        *ortho_exchange_archiv_transport_archiv,
+        *ortho_machine_transport_archiv,       
+        *ortho_machine_ortho_machine,
+        *close_ortho_door,
+        *centrifuge_machine_centrifuge_racks,          
+        *counter_weights_centrifuge_racks_small,
+        *counter_weights_centrifuge_racks_big, 
+        *centrifuge_racks_centrifuge_machine,        
+        *dimension_machine_dimension_machine,
+        *dimension_racks_dimension_machine_controls,        
+        *dimension_racks_dimension_machine_big,
+        *dimension_racks_dimension_machine_medium,
+        *cs_racks_cs_machine_controls,
+        *cs_racks_cs_machine,        
+        *dimension_racks_dimension_racks,   
+        *dimension_archiv_exchange_dimension_racks_big,
+        *dimension_archiv_exchange_dimension_racks_medium, 
+        *centrifuge_racks_camera2_dimension_big,
+        *centrifuge_racks_camera2_dimension_med,
+        *cs_racks_cs_racks,
+        *coagulation_archiv_exchange_cs_racks,                        
+        *centrifuge_racks_camera2_cs,
+        *dimension_machine_dimension_racks_controls,
+        *dimension_machine_dimension_racks_bigs,
+        *dimension_machine_dimension_racks_mediums,
+        *cs_machine_cs_racks,        
+        *centrifuge_racks_counter_weights_small,
+        *centrifuge_racks_counter_weights_big,
+        *sysmex_archiv_sysmex_machine_controls,
+        *sysmex_machine_sysmex_machine,
+        *sysmex_archiv_sysmex_machine,
+        *camera1_camera2_ortho,          
+        *camera1_camera2_dimm_big,
+        *camera1_camera2_dimm_medium,
+        *camera1_camera2_cs,
+        *camera1_camera2_sysmex,        
+        *dimension_racks_dimension_archiv_exchange,
+        *cs_racks_coagulation_archiv_exchange,  
+        *sysmex_machine_sysmex_archiv,               
+        *dimension_archiv_exchange_externals,
+        *coagulation_archiv_exchange_externals,
+        *sysmex_archiv_externals, 
+        *dust_bin_ortho_archiv,     
+        *dust_bin_dimension_archiv1,
+        *dust_bin_dimension_archiv2,
+        *dust_bin_dimension_archiv3,
+        *dust_bin_dimension_archiv4,
+        *dust_bin_coagulation_archiv,
+        *ortho_archiv_dust_bin,   
+        *dimension_archiv1_dust_bin,
+        *dimension_archiv2_dust_bin,
+        *dimension_archiv3_dust_bin,
+        *dimension_archiv4_dust_bin,
+        *coagulation_archiv_dust_bin,
+        *dimension_archiv1_transport_archiv,
+        *dimension_archiv2_transport_archiv,
+        *dimension_archiv3_transport_archiv,
+        *dimension_archiv4_transport_archiv,
+        *coagulation_archiv_transport_archiv, 
+        *dimension_archiv_exchange_dimension_archiv1,
+        *dimension_archiv_exchange_dimension_archiv2,
+        *dimension_archiv_exchange_dimension_archiv3,
+        *dimension_archiv_exchange_dimension_archiv4,
+        *coagulation_archiv_exchange_coagulation_archiv,
+        *transport_archiv_change
+      ]
+  
+  - transition_order_id: 2
+    transition_orders:
+    - *Robot1: [
+        *camera2_ortho_machine_pilots,
+        *camera2_ortho_machine,
+        *camera2_transport_archiv,
+        *camera2_dimension_racks_big,
+        *camera2_dimension_racks_medium,
+        *camera2_cs_racks,
+        *camera2_centri_racks_ortho,
+        *camera2_centri_racks_dimm_big,  
+        *camera2_centri_racks_dimm_medium,
+        *camera2_centri_racks_cs,  
+        *camera2_sysmex_machine, 
+        *camera2_externals,
+        *camera2_dimension_archiv_exchange,
+        *camera2_coagulation_archiv_exchange,
+        *camera2_sysmex_archiv,
+        *camera2_ortho_exchange_archiv,
+        *camera2_fehler, 
+        *dimension_archiv1_dimension_archiv_exchange,
+        *dimension_archiv2_dimension_archiv_exchange,
+        *dimension_archiv3_dimension_archiv_exchange,
+        *dimension_archiv4_dimension_archiv_exchange,
+        *coagulation_archiv_coagulation_archiv_exchange,
+        *transport_archiv_dimension_archiv1, 
+        *transport_archiv_dimension_archiv2, 
+        *transport_archiv_dimension_archiv3,         
+        *transport_archiv_dimension_archiv4,
+        *transport_archiv_coagulation_archiv_controls,
+        *transport_archiv_coagulation_archiv,  
+        *transport_archiv_ortho_archiv_pilots,
+        *transport_archiv_sysmex_controls,
+        *transport_archiv_dimension_controls,
+        *transport_archiv_cs_controls, 
+        *transport_archiv_dimension_racks_big,
+        *transport_archiv_dimension_racks_medium,
+        *transport_archiv_cs_racks,
+        *transport_archiv_externals,
+        *ortho_exchange_archiv_ortho_machine,
+        *transport_archiv_ortho_machine_retest,
+        *ortho_archiv_transport_archiv_pilots,     
+        *camera1_camera2_pilots,
+        *centrifuge_racks_camera2_ortho,        
+        *transport_archiv_camera2_pilots,
+        *coagulation_archiv_transport_archiv_controls,
+        *ortho_archiv_transport_archiv_ortho_machine,
+        *ortho_archiv_transport_archiv_ortho_retest,        
+        *transport_archiv_ortho_archiv,        
+        *ortho_archiv_transport_archiv,  
+        *ortho_exchange_archiv_transport_archiv,
+        *ortho_machine_transport_archiv,        
+        *ortho_machine_ortho_machine,
+        *close_ortho_door,
+        *centrifuge_machine_centrifuge_racks,          
+        *counter_weights_centrifuge_racks_small,
+        *counter_weights_centrifuge_racks_big, 
+        *centrifuge_racks_centrifuge_machine,        
+        *dimension_machine_dimension_machine,
+        *dimension_racks_dimension_machine_controls,        
+        *dimension_racks_dimension_machine_big,
+        *dimension_racks_dimension_machine_medium,
+        *cs_racks_cs_machine_controls,
+        *cs_racks_cs_machine,        
+        *dimension_racks_dimension_racks,   
+        *dimension_archiv_exchange_dimension_racks_big,
+        *dimension_archiv_exchange_dimension_racks_medium, 
+        *centrifuge_racks_camera2_dimension_big,
+        *centrifuge_racks_camera2_dimension_med,
+        *cs_racks_cs_racks,
+        *coagulation_archiv_exchange_cs_racks,                        
+        *centrifuge_racks_camera2_cs,
+        *dimension_machine_dimension_racks_controls,
+        *dimension_machine_dimension_racks_bigs,
+        *dimension_machine_dimension_racks_mediums,
+        *cs_machine_cs_racks,        
+        *centrifuge_racks_counter_weights_small,
+        *centrifuge_racks_counter_weights_big,
+        *sysmex_archiv_sysmex_machine_controls,
+        *sysmex_machine_sysmex_machine,
+        *sysmex_archiv_sysmex_machine, 
+        *camera1_camera2_sysmex,        
+        *camera1_camera2_ortho,        
+        *camera1_camera2_dimm_big,
+        *camera1_camera2_dimm_medium,
+        *camera1_camera2_cs,
+        *sysmex_machine_sysmex_archiv,                
+        *dimension_racks_dimension_archiv_exchange,
+        *cs_racks_coagulation_archiv_exchange,                      
+        *dimension_archiv_exchange_externals,
+        *coagulation_archiv_exchange_externals,
+        *sysmex_archiv_externals, 
+        *dust_bin_ortho_archiv,     
+        *dust_bin_dimension_archiv1,
+        *dust_bin_dimension_archiv2,
+        *dust_bin_dimension_archiv3,
+        *dust_bin_dimension_archiv4,
+        *dust_bin_coagulation_archiv,
+        *ortho_archiv_dust_bin,
+        *coagulation_archiv_dust_bin,
+        *dimension_archiv1_dust_bin,
+        *dimension_archiv2_dust_bin,
+        *dimension_archiv3_dust_bin,
+        *dimension_archiv4_dust_bin,
+        *dimension_archiv1_transport_archiv,
+        *dimension_archiv2_transport_archiv,
+        *dimension_archiv3_transport_archiv,
+        *dimension_archiv4_transport_archiv,
+        *coagulation_archiv_transport_archiv, 
+        *dimension_archiv_exchange_dimension_archiv1,
+        *dimension_archiv_exchange_dimension_archiv2,
+        *dimension_archiv_exchange_dimension_archiv3,
+        *dimension_archiv_exchange_dimension_archiv4,
+        *coagulation_archiv_exchange_coagulation_archiv,
+        *transport_archiv_change,
+      ]

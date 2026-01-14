@@ -1,0 +1,1 @@
+export const singlePaletteZoneIDsArray = [15, 16, 17, 20]

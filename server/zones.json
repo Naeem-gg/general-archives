@@ -1,0 +1,631 @@
+[
+    {
+        "zone_id": 111,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"4180022\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"3366424\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"1348648\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"1070021\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"2784549\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 1,
+                        "zone_name": "Ortho Archiv Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"8381520\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"5082990\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"7361540\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"3646649\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"4178188\", \"color\": 10, \"type\": \"1\", \"current_zone_id\": 111, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-15T20:01:26.129336\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 1,
+                        "zone_name": "Ortho Archiv Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 8,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 2,
+                        "zone_name": "Ortho Archiv Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 2,
+                        "zone_name": "Ortho Archiv Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Ortho Archiv"
+        }
+    },
+    {
+        "zone_id": 112,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"4660626\", \"color\": 1, \"type\": 1, \"current_zone_id\": 112, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:44.865096\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"9642248\", \"color\": 1, \"type\": 1, \"current_zone_id\": 112, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:44.865096\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"4516306\", \"color\": 1, \"type\": 1, \"current_zone_id\": 112, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:44.865096\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"2612444\", \"color\": 1, \"type\": 1, \"current_zone_id\": 112, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:44.865096\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"7003023\", \"color\": 1, \"type\": 1, \"current_zone_id\": 112, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:44.865096\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 10,
+                        "zone_name": "Coagulation Archiv1 Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 3,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 10,
+                        "zone_name": "Coagulation Archiv1 Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 10,
+                        "zone_name": "Coagulation Archiv1 Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 3,
+                        "zone_name": "CS-CA Archiv1 Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Coagulation Archiv1"
+        }
+    },
+    {
+        "zone_id": 113,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"5038005\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:31.736923\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"7142962\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:31.736923\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"6457360\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:31.736923\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"3365826\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:31.736923\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"2959776\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 1, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:31.736923\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 6,
+                        "zone_name": "Dimension Archiv1 Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"9474967\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:46.981733\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"9217637\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:46.981733\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"9654830\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:46.981733\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"2556816\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:46.981733\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"2395409\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 2, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:46:46.981733\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 6,
+                        "zone_name": "Dimension Archiv1 Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"2035643\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 3, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:02.252084\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"5577774\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 3, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:02.252084\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"7750693\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 3, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:02.252084\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"5364758\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 3, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:02.252084\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"5016963\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 3, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:47:02.252084\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 6,
+                        "zone_name": "Dimension Archiv1 Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 5,
+                        "zone_items": [
+                            {
+                                "position": 1,
+                                "content": "{\"line_code\": \"9128880\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 4, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:53.665405\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 2,
+                                "content": "{\"line_code\": \"5001270\", \"color\": 3, \"type\": 3, \"current_zone_id\": 113, \"current_subzone_id\": 4, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:53.665405\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 3,
+                                "content": "{\"line_code\": \"9469812\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 4, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:53.665405\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 4,
+                                "content": "{\"line_code\": \"1763902\", \"color\": 2, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 4, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:53.665405\", \"blood_bags\": []}"
+                            },
+                            {
+                                "position": 5,
+                                "content": "{\"line_code\": \"5620140\", \"color\": 8, \"type\": 2, \"current_zone_id\": 113, \"current_subzone_id\": 4, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:53.665405\", \"blood_bags\": []}"
+                            }
+                        ],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 6,
+                        "zone_name": "Dimension Archiv1 Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Dimension Archiv1"
+        }
+    },
+    {
+        "zone_id": 114,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 3,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 7,
+                        "zone_name": "Dimension Archiv2 Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 7,
+                        "zone_name": "Dimension Archiv2 Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 7,
+                        "zone_name": "Dimension Archiv2 Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 7,
+                        "zone_name": "Dimension Archiv2 Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Dimension Archiv2"
+        }
+    },
+    {
+        "zone_id": 115,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 8,
+                        "zone_name": "Dimension Archiv3 Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 8,
+                        "zone_name": "Dimension Archiv3 Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 8,
+                        "zone_name": "Dimension Archiv3 Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 8,
+                        "zone_name": "Dimension Archiv3 Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Dimension Archiv3"
+        }
+    },
+    {
+        "zone_id": 116,
+        "zone": {
+            "phase": 1,
+            "zone_items": [],
+            "subzones": [
+                {
+                    "zone_id": 1,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 9,
+                        "zone_name": "Dimension Archiv4 Batch1"
+                    }
+                },
+                {
+                    "zone_id": 2,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 9,
+                        "zone_name": "Dimension Archiv4 Batch2"
+                    }
+                },
+                {
+                    "zone_id": 3,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 9,
+                        "zone_name": "Dimension Archiv4 Batch3"
+                    }
+                },
+                {
+                    "zone_id": 4,
+                    "zone": {
+                        "phase": 6,
+                        "zone_items": [],
+                        "subzones": [],
+                        "door_opened": false,
+                        "zone_type": 9,
+                        "zone_name": "Dimension Archiv4 Batch4"
+                    }
+                }
+            ],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Dimension Archiv4"
+        }
+    },
+    {
+        "zone_id": 15,
+        "zone": {
+            "phase": 7,
+            "zone_items": [
+                {
+                    "position": 1,
+                    "content": "{\"line_code\": \"6540968\", \"color\": 3, \"type\": 3, \"current_zone_id\": 15, \"current_subzone_id\": 15, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 2,
+                    "content": "{\"line_code\": \"9950989\", \"color\": 3, \"type\": 3, \"current_zone_id\": 15, \"current_subzone_id\": 15, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 3,
+                    "content": "{\"line_code\": \"3390173\", \"color\": 3, \"type\": 3, \"current_zone_id\": 15, \"current_subzone_id\": 15, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                }
+            ],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": 7,
+            "zone_name": "Dimension Exchange archiv"
+        }
+    },
+    {
+        "zone_id": 16,
+        "zone": {
+            "phase": 7,
+            "zone_items": [
+                {
+                    "position": 1,
+                    "content": "{\"line_code\": \"4242901\", \"color\": 1, \"type\": 1, \"current_zone_id\": 16, \"current_subzone_id\": 16, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                }
+            ],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": 10,
+            "zone_name": "Coagulation Archive Exchange"
+        }
+    },
+    {
+        "zone_id": 17,
+        "zone": {
+            "phase": 7,
+            "zone_items": [
+                {
+                    "position": 1,
+                    "content": "{\"line_code\": \"1704590\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 2,
+                    "content": "{\"line_code\": \"1505329\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 3,
+                    "content": "{\"line_code\": \"8106068\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 4,
+                    "content": "{\"line_code\": \"5091368\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 5,
+                    "content": "{\"line_code\": \"6408427\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 6,
+                    "content": "{\"line_code\": \"1138730\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:36:47.755582\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 7,
+                    "content": "{\"line_code\": \"7144118\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2026-01-12T17:38:55.345825\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 8,
+                    "content": "{\"line_code\": \"7509338\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2026-01-12T17:38:55.345825\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 9,
+                    "content": "{\"line_code\": \"1507226\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2026-01-12T17:38:55.345825\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 10,
+                    "content": "{\"line_code\": \"3186545\", \"color\": 4, \"type\": 1, \"current_zone_id\": 17, \"current_subzone_id\": 17, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": false, \"decapped\": false, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2026-01-12T17:38:55.345825\", \"blood_bags\": []}"
+                }
+            ],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Sysmex Archiv"
+        }
+    },
+    {
+        "zone_id": 19,
+        "zone": {
+            "phase": 7,
+            "zone_items": [
+                {
+                    "position": 1,
+                    "content": "{\"line_code\": \"8196871\", \"color\": 9, \"type\": 2, \"current_zone_id\": 19, \"current_subzone_id\": 19, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:39.950999\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 2,
+                    "content": "{\"line_code\": \"5505642\", \"color\": 9, \"type\": 2, \"current_zone_id\": 19, \"current_subzone_id\": 19, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:39.950999\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 3,
+                    "content": "{\"line_code\": \"4590023\", \"color\": 9, \"type\": 2, \"current_zone_id\": 19, \"current_subzone_id\": 19, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:39.950999\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 4,
+                    "content": "{\"line_code\": \"7231042\", \"color\": 9, \"type\": 2, \"current_zone_id\": 19, \"current_subzone_id\": 19, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:39.950999\", \"blood_bags\": []}"
+                },
+                {
+                    "position": 5,
+                    "content": "{\"line_code\": \"4068499\", \"color\": 9, \"type\": 2, \"current_zone_id\": 19, \"current_subzone_id\": 19, \"next_zone_id\": null, \"fluid_level\": true, \"transits\": [\"ARCH\"], \"centrifuged\": true, \"decapped\": true, \"to_centrifuge\": null, \"to_decap\": null, \"archive_type\": null, \"emergency\": false, \"added_time\": \"2025-12-19T15:48:39.950999\", \"blood_bags\": []}"
+                }
+            ],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": 2,
+            "zone_name": "Dust Bin Pallet"
+        }
+    },
+    {
+        "zone_id": 20,
+        "zone": {
+            "phase": 9,
+            "zone_items": [],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Transport Archiv"
+        }
+    },
+    {
+        "zone_id": 22,
+        "zone": {
+            "phase": 7,
+            "zone_items": [],
+            "subzones": [],
+            "door_opened": false,
+            "zone_type": null,
+            "zone_name": "Ortho Archive Exchange"
+        }
+    }
+]

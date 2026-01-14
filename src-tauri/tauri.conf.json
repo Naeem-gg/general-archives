@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Brilon Archives",
+  "version": "0.1.1",
+  "identifier": "Diabots.ArchivesManager",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Brilon Archives",
+        "width": 900,
+        "minWidth": 900,
+        "height": 700,
+        "minHeight": 700
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "createUpdaterArtifacts": true,
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZGODI2Mjg2MDI0MDgzNjQKUldSa2cwQUNobUtDLzAzbXpWVDI0ekc2TVM3WW9JTk54eE9wL2FQMGY3aUVhN0IxTGFPNEMwT3UK",
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}
