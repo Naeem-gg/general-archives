@@ -3,9 +3,10 @@ import {
   AlertCircle,
   Archive,
   ChevronRight,
+  MoreVertical,
   RefreshCcw
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -24,9 +25,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import DeveloperOptions from "./components/DeveloperOprions";
 import { Search } from "./components/Search";
 import SinglePaletteArchives from "./components/SinglePaletteArchives";
-import { useArchiveStore, useLanguageStore } from "./hooks/store";
+import { ZoneReorderDialog } from "./components/ZoneReorderDialog";
+import { useArchiveStore, useLanguageStore, useSinglePaletteStore } from "./hooks/store";
 import { readConfig } from "./lib/readConfig";
-import { singlePaletteZoneIDsArray } from "./lib/singlePaletteZoneIDsArray";
 import { zoneNameMapping } from "./lib/zoneNameMapping";
 
 interface Content {
@@ -63,10 +64,15 @@ export interface ZoneData {
   zone: Zone;
 }
 
+const ZONE_ORDER_STORAGE_KEY = "zoneOrder";
+
 export default function ArchivesDashboard() {
   const fetchArchives = useArchiveStore((state) => state.fetchArchives);
   const { archives, error, isLoading } = useArchiveStore();
+  const { singlePaletteZoneIDs, fetchSinglePallets } = useSinglePaletteStore();
   const [showRefreshAnimation, setShowRefreshAnimation] = useState(false);
+  const [showReorderDialog, setShowReorderDialog] = useState(false);
+  const [zoneOrder, setZoneOrder] = useState<number[]>([]);
   const language = useLanguageStore((state) => state.language);
 
   const handleRefresh = () => {
@@ -78,8 +84,68 @@ export default function ArchivesDashboard() {
 
   useEffect(() => {
     fetchArchives();
-    
-  }, [fetchArchives]);
+    fetchSinglePallets();
+  }, [fetchArchives, fetchSinglePallets]);
+
+  // Load zone order from localStorage
+  useEffect(() => {
+    const savedOrder = localStorage.getItem(ZONE_ORDER_STORAGE_KEY);
+    if (savedOrder) {
+      try {
+        setZoneOrder(JSON.parse(savedOrder));
+      } catch (e) {
+        console.error("Failed to parse zone order from localStorage", e);
+      }
+    }
+  }, []);
+
+  // Get zones list for reordering
+  const zonesForReorder = useMemo(() => {
+    return archives
+      .filter((archive) => {
+        const zoneName = (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id];
+        if (!zoneName) return false;
+        if (singlePaletteZoneIDs.includes(archive.zone_id)) return false;
+        return true;
+      })
+      .map((archive) => ({
+        zone_id: archive.zone_id,
+        zone_name: (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id] || `Zone ${archive.zone_id}`,
+      }));
+  }, [archives]);
+
+  // Handle zone reorder
+  const handleZoneReorder = (reorderedZones: { zone_id: number; zone_name: string }[]) => {
+    const newOrder = reorderedZones.map((z) => z.zone_id);
+    setZoneOrder(newOrder);
+    localStorage.setItem(ZONE_ORDER_STORAGE_KEY, JSON.stringify(newOrder));
+  };
+
+  // Get sorted archives based on zone order
+  const sortedArchives = useMemo(() => {
+    if (zoneOrder.length === 0) {
+      return archives;
+    }
+
+    const orderMap = new Map(zoneOrder.map((id, index) => [id, index]));
+    const sorted = [...archives].sort((a, b) => {
+      const aIndex = orderMap.get(a.zone_id);
+      const bIndex = orderMap.get(b.zone_id);
+
+      // If both are in the order, sort by their position
+      if (aIndex !== undefined && bIndex !== undefined) {
+        return aIndex - bIndex;
+      }
+      // If only a is in the order, a comes first
+      if (aIndex !== undefined) return -1;
+      // If only b is in the order, b comes first
+      if (bIndex !== undefined) return 1;
+      // If neither is in the order, maintain original order
+      return 0;
+    });
+
+    return sorted;
+  }, [archives, zoneOrder]);
   const [developerOptions, setDeveloperOptions] = useState<string>("");
   useEffect(() => {
     const getDev = async () => {
@@ -164,11 +230,11 @@ export default function ArchivesDashboard() {
         animate="visible"
         className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        {archives.map((archive) => {
-          const zoneName = archive.zone.zone_name;
+        {sortedArchives.map((archive) => {
+          const zoneName = (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id];
           if (!zoneName) return null;
           if (
-            singlePaletteZoneIDsArray.includes(archive.zone_id)
+            singlePaletteZoneIDs.includes(archive.zone_id)
           )
             return null; // Skip these archives as they are handled separately
           return (
@@ -232,7 +298,7 @@ export default function ArchivesDashboard() {
             </motion.div>
           );
         })}
-        <SinglePaletteArchives zoneIDs={singlePaletteZoneIDsArray} archives={archives} />
+        <SinglePaletteArchives zoneIDs={singlePaletteZoneIDs} archives={archives} />
       </motion.div>
     );
   };
@@ -284,6 +350,15 @@ export default function ArchivesDashboard() {
 
             <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
               <Search />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9"
+                onClick={() => setShowReorderDialog(true)}
+                title="Reorder Zones"
+              >
+                <MoreVertical className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </motion.div>
@@ -298,6 +373,13 @@ export default function ArchivesDashboard() {
           <AnimatePresence mode="wait">{renderArchiveCards()}</AnimatePresence>
         </ScrollArea>
       </div>
+
+      <ZoneReorderDialog
+        open={showReorderDialog}
+        onOpenChange={setShowReorderDialog}
+        zones={zonesForReorder}
+        onReorder={handleZoneReorder}
+      />
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useArchiveStore, useLoadingStore, useTubesStore } from "./store";
+import { useArchiveStore, useLoadingStore, useTubesStore, useSinglePaletteStore } from "./store";
 import { useParams, useSearchParams } from "react-router-dom";
-import { singlePaletteZoneIDsArray } from "@/lib/singlePaletteZoneIDsArray";
 
 export const useSetTubes = () => {
   const { setIsLoading } = useLoadingStore();
   const [, setError] = useState<string | null>(null);
   const fetchArchives = useArchiveStore((state) => state.fetchArchives);
   const archives = useArchiveStore((state) => state.archives);
+  const { singlePaletteZoneIDs } = useSinglePaletteStore();
   const [searchParams] = useSearchParams();
   const zone_id = searchParams.get("zone_id");
   const { id } = useParams<{ id: string }>();
@@ -32,7 +32,7 @@ export const useSetTubes = () => {
         }
         
           //For Exchange Archives
-          if (singlePaletteZoneIDsArray.includes(Number(zone_id))) {
+          if (singlePaletteZoneIDs.includes(Number(zone_id))) {
             setTubes(selectArchive.zone.zone_items);
             return; // Return early to avoid further processing
           }

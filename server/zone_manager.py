@@ -1960,5 +1960,12 @@ class ZoneManager:
         end = time(2, 35)   
         test= not (start <= now <= end)
         return test
-
+    async def get_single_pallets(self):
+        data = []
+        for zone_id in self.zones:
+            zone =self.zones[zone_id]
+            if zone.stateful and (not zone.subzones or len(zone.subzones)==0):
+                data.append(zone.zone_id)
+        return data
+    
 zone_manager:ZoneManager=ZoneManager(config)  

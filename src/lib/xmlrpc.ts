@@ -261,3 +261,24 @@ export const resetArchives = async (): Promise<boolean> => {
   const parsedValue = xmlRpcValueToJson(rawValue);
   return parsedValue;
 };
+
+/**
+ * Calls the get_single_pallets method to retrieve single palette zone IDs.
+ * @returns Array of zone IDs that are single palettes
+ */
+export const getSinglePallets = async (): Promise<number[]> => {
+  const result = await callXMLRPCMethod("get_single_pallets");
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      try {
+        const rawValue = result?.methodResponse?.params?.param?.value;
+        const parsed = xmlRpcValueToJson(rawValue);
+        // Ensure it's an array
+        const arrayResult = Array.isArray(parsed) ? parsed : [parsed];
+        resolve(arrayResult);
+      } catch (error) {
+        reject(error);
+      }
+    }, 0);
+  });
+};

@@ -45,7 +45,7 @@ import {
 import { deleteArchive } from "@/lib/xmlrpc";
 import { zoneNameMapping } from "@/lib/zoneNameMapping";
 import { ask, message } from "@tauri-apps/plugin-dialog";
-import { singlePaletteZoneIDsArray } from "@/lib/singlePaletteZoneIDsArray";
+import { useSinglePaletteStore } from "@/hooks/store";
 
 export default function Header({
   id,
@@ -61,6 +61,7 @@ export default function Header({
   const router = useNavigate();
   const fetchArchives = useArchiveStore((state) => state.fetchArchives);
   const archives = useArchiveStore((state) => state.archives);
+  const { singlePaletteZoneIDs } = useSinglePaletteStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const setIsLoading = useLoadingStore((state) => state.setIsLoading);
@@ -170,7 +171,7 @@ export default function Header({
       let updatedTubes = [];
 
     
-        if (singlePaletteZoneIDsArray.map(String).includes(zone_id)) {
+        if (singlePaletteZoneIDs.map(String).includes(zone_id)) {
           updatedTubes = selectArchive.zone.zone_items;
         } else {
           updatedTubes =
@@ -218,7 +219,7 @@ export default function Header({
       return;
     }
     if(type === "back"){
-      if(singlePaletteZoneIDsArray.map(String).includes(zone_id) ) {
+      if(singlePaletteZoneIDs.map(String).includes(zone_id) ) {
         return router("/");
       }
       router(-1);

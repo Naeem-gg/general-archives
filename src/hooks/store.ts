@@ -1,4 +1,4 @@
-import { deleteArchive, getArchivesData } from "@/lib/xmlrpc";
+import { deleteArchive, getArchivesData, getSinglePallets } from "@/lib/xmlrpc";
 import { create } from "zustand";
 import { Tube } from "../components/types";
 export interface Archive {
@@ -118,4 +118,30 @@ export const useLanguageStore = create<LanguageStore>((set) => ({
       language:
         typeof language === "function" ? language(state.language) : language,
     })),
+}));
+
+type SinglePaletteStore = {
+  singlePaletteZoneIDs: number[];
+  isLoading: boolean;
+  error: string | null;
+  fetchSinglePallets: () => Promise<void>;
+};
+
+export const useSinglePaletteStore = create<SinglePaletteStore>((set) => ({
+  singlePaletteZoneIDs: [],
+  isLoading: false,
+  error: null,
+  fetchSinglePallets: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const data = await getSinglePallets();
+      set({ singlePaletteZoneIDs: data });
+    } catch (error: any) {
+      set({ error: error.message || "Error fetching single pallets" });
+      // Fallback to empty array on error
+      set({ singlePaletteZoneIDs: [] });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }));

@@ -99,8 +99,16 @@ class GlobalHandler(handler.XMLRPCView):
             tasks_auditor.info("Data got refreshed as file is not loaded.")
             zone_manager.file_loaded=True
         data=await zone_manager.get_archiv_data()
+        print(data)
         return data
     
+    async def rpc_get_order(self):
+        order = {
+            "corners":{1:"top-left",2:"top-right",3:"bottom-right",4:"bottom-left"},
+            "directions":{1:"right",2:"down",3:"left",4:"up"}
+        }
+        return {"corner":1,"direction":1}
+
     async def rpc_get_data(self):
         data=await zone_manager.get_data()
         return data
@@ -172,7 +180,9 @@ class GlobalHandler(handler.XMLRPCView):
     async def rpc_get_colors(self):
         return COLORS
     async def rpc_get_transits(self):
+        
         return TRANSITS
+
     
     async def rpc_get_phases(self):
         kv = {e.name: e.value for e in ZonePhase}
@@ -192,7 +202,10 @@ class GlobalHandler(handler.XMLRPCView):
             print(f"Updating subzone {subzone_id} in zone {zone_id} to phase {phase}")
         else:
             print(f"Updating zone {zone_id} to phase {phase}")
-
+    
+    async def rpc_get_single_pallets(self):
+        return await zone_manager.get_single_pallets()
+    
     def get_results(self):
         results =[]
         for i in range(35):

@@ -18,18 +18,23 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useArchiveStore } from "@/hooks/store";
 import { calculateRacks } from "@/lib/calculateRacks";
 import { zoneNameMapping } from "@/lib/zoneNameMapping";
-import { singlePaletteZoneIDsArray } from "@/lib/singlePaletteZoneIDsArray";
+import { useSinglePaletteStore } from "@/hooks/store";
 
 export default function Details() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { archives, isLoading, error } = useArchiveStore();
+  const { singlePaletteZoneIDs, fetchSinglePallets } = useSinglePaletteStore();
+  
   useEffect(() => {
-   
-    if (id && singlePaletteZoneIDsArray.map(String).includes(id)) {
+    fetchSinglePallets();
+  }, [fetchSinglePallets]);
+  
+  useEffect(() => {
+    if (id && singlePaletteZoneIDs.map(String).includes(id)) {
       navigate(`/rack/1?zone_id=${id}`);
     }
-  }, []);
+  }, [id, singlePaletteZoneIDs, navigate]);
 
   if (!id) return null;
 
