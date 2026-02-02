@@ -85,14 +85,19 @@ export const useTubesStore = create<TubesStore>((set) => ({
 
 type ToastStore = {
   showSuccessToast: boolean;
+  showErrorToast: boolean;
   setShowSuccessToast: (show: boolean) => void;
+  setShowErrorToast: (show: boolean) => void;
   toastMessage: string;
   setToastMessage: (message: string) => void;
 };
 export const useToastStore = create<ToastStore>((set) => ({
   showSuccessToast: false,
+  showErrorToast: false,
   setShowSuccessToast: (show: boolean) =>
     set(() => ({ showSuccessToast: show })),
+  setShowErrorToast: (show: boolean) =>
+    set(() => ({ showErrorToast: show })),
   toastMessage: "",
   setToastMessage: (message: string) => set(() => ({ toastMessage: message })),
 }));
@@ -144,4 +149,43 @@ export const useSinglePaletteStore = create<SinglePaletteStore>((set) => ({
       set({ isLoading: false });
     }
   },
+}));
+
+type SortingConfigStore = {
+  rows: number;
+  columns: number;
+  corner: number;
+  direction: number;
+  isActive: boolean;
+  setSortingConfig: (config: {
+    rows: number;
+    columns: number;
+    corner: number;
+    direction: number;
+  }) => void;
+  clearSortingConfig: () => void;
+};
+
+export const useSortingConfigStore = create<SortingConfigStore>((set) => ({
+  rows: 0,
+  columns: 0,
+  corner: 1,
+  direction: 1,
+  isActive: false,
+  setSortingConfig: (config) =>
+    set({
+      rows: config.rows,
+      columns: config.columns,
+      corner: config.corner,
+      direction: config.direction,
+      isActive: config.rows > 0 && config.columns > 0,
+    }),
+  clearSortingConfig: () =>
+    set({
+      rows: 0,
+      columns: 0,
+      corner: 1,
+      direction: 1,
+      isActive: false,
+    }),
 }));

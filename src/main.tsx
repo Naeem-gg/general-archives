@@ -7,7 +7,7 @@ import ModeWrapper from "./components/ModeWrapper";
 import { ThemeProvider } from "./components/theme-provider";
 import Detail from "./routes/Detail";
 import Rack from "./routes/Rack";
-import Test from "./routes/test";
+
 
 const router = createBrowserRouter(
   [
@@ -24,10 +24,7 @@ const router = createBrowserRouter(
       element: <Rack />,
     },
 
-    {
-      path: "/test",
-      element: <Test />,
-    },
+  
   ],
   {
     future: {

@@ -2,11 +2,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   AlertCircle,
   Archive,
+  Check,
   ChevronRight,
+  Download,
   MoreVertical,
-  RefreshCcw
+  RefreshCcw,
+  Upload
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -26,9 +29,10 @@ import DeveloperOptions from "./components/DeveloperOprions";
 import { Search } from "./components/Search";
 import SinglePaletteArchives from "./components/SinglePaletteArchives";
 import { ZoneReorderDialog } from "./components/ZoneReorderDialog";
-import { useArchiveStore, useLanguageStore, useSinglePaletteStore } from "./hooks/store";
+import { useArchiveStore, useLanguageStore, useSinglePaletteStore, useSortingConfigStore, useToastStore } from "./hooks/store";
 import { readConfig } from "./lib/readConfig";
-import { zoneNameMapping } from "./lib/zoneNameMapping";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 interface Content {
   line_code: string;
@@ -74,12 +78,124 @@ export default function ArchivesDashboard() {
   const [showReorderDialog, setShowReorderDialog] = useState(false);
   const [zoneOrder, setZoneOrder] = useState<number[]>([]);
   const language = useLanguageStore((state) => state.language);
+  const setLanguage = useLanguageStore((state) => state.setLanguage);
+  const sortingConfig = useSortingConfigStore();
+  const { setShowSuccessToast, setShowErrorToast, setToastMessage, showSuccessToast, showErrorToast, toastMessage } = useToastStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleRefresh = () => {
     setShowRefreshAnimation(true);
     fetchArchives().finally(() => {
       setTimeout(() => setShowRefreshAnimation(false), 1000);
     });
+  };
+
+  const handleExportConfig = async () => {
+    try {
+      const config = {
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        sortingConfig: {
+          rows: sortingConfig.rows,
+          columns: sortingConfig.columns,
+          corner: sortingConfig.corner,
+          direction: sortingConfig.direction,
+          isActive: sortingConfig.isActive,
+        },
+        zoneOrder: zoneOrder,
+        language: language,
+        singlePaletteZoneIDs: singlePaletteZoneIDs,
+      };
+
+      const fileName = `brilon-archiv-config-${new Date().toISOString().split("T")[0]}.json`;
+      
+      // Use Tauri's save dialog to get the file path
+      const filePath = await save({
+        defaultPath: fileName,
+        filters: [{
+          name: "JSON",
+          extensions: ["json"]
+        }]
+      });
+
+      if (!filePath) {
+        // User cancelled the dialog
+        return;
+      }
+
+      // Write the file using Tauri's file system API
+      await writeTextFile(filePath, JSON.stringify(config, null, 2));
+
+      setToastMessage(`Konfiguration erfolgreich exportiert: ${filePath}`);
+      setShowSuccessToast(true);
+      setTimeout(() => setShowSuccessToast(false), 5000);
+    } catch (error) {
+      console.error("Error exporting config:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unbekannter Fehler";
+      setToastMessage(`Fehler beim Exportieren: ${errorMessage}`);
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 4000);
+    }
+  };
+
+  const handleImportConfig = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const config = JSON.parse(text);
+
+      // Validate config structure
+      if (!config || typeof config !== "object") {
+        throw new Error("Ungültige Konfigurationsdatei");
+      }
+
+      // Restore sorting config
+      if (config.sortingConfig) {
+        sortingConfig.setSortingConfig({
+          rows: config.sortingConfig.rows || 0,
+          columns: config.sortingConfig.columns || 0,
+          corner: config.sortingConfig.corner || 1,
+          direction: config.sortingConfig.direction || 1,
+        });
+      }
+
+      // Restore zone order
+      if (Array.isArray(config.zoneOrder)) {
+        setZoneOrder(config.zoneOrder);
+        localStorage.setItem(ZONE_ORDER_STORAGE_KEY, JSON.stringify(config.zoneOrder));
+      }
+
+      // Restore language
+      if (typeof config.language === "boolean") {
+        setLanguage(config.language);
+      }
+
+      // Note: singlePaletteZoneIDs is fetched from server, so we don't restore it
+
+      setToastMessage("Konfiguration erfolgreich importiert");
+      setShowSuccessToast(true);
+      setTimeout(() => setShowSuccessToast(false), 4000);
+
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Error importing config:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unbekannter Fehler";
+      setToastMessage(`Fehler beim Importieren: ${errorMessage}`);
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 4000);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   useEffect(() => {
@@ -103,14 +219,14 @@ export default function ArchivesDashboard() {
   const zonesForReorder = useMemo(() => {
     return archives
       .filter((archive) => {
-        const zoneName = (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id];
+        const zoneName = (archive.zone as any).zone_name
         if (!zoneName) return false;
         if (singlePaletteZoneIDs.includes(archive.zone_id)) return false;
         return true;
       })
       .map((archive) => ({
         zone_id: archive.zone_id,
-        zone_name: (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id] || `Zone ${archive.zone_id}`,
+        zone_name: (archive.zone as any).zone_name,
       }));
   }, [archives]);
 
@@ -206,7 +322,7 @@ export default function ArchivesDashboard() {
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {[...Array(8)].map((_, i) => (
-            <motion.div key={i} variants={itemVariants}>
+            <motion.div key={i} variants={itemVariants as any}>
               <Card className="overflow-hidden border border-border/50 bg-card/30 backdrop-blur-sm">
                 <CardHeader className="border-b p-6 bg-gradient-to-r from-muted/80 to-muted/30">
                   <Skeleton className="h-6 w-2/3" />
@@ -231,14 +347,14 @@ export default function ArchivesDashboard() {
         className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         {sortedArchives.map((archive) => {
-          const zoneName = (archive.zone as any).zone_name || zoneNameMapping[archive.zone_id];
+          const zoneName = archive.zone.zone_name;
           if (!zoneName) return null;
           if (
             singlePaletteZoneIDs.includes(archive.zone_id)
           )
             return null; // Skip these archives as they are handled separately
           return (
-            <motion.div key={archive.zone_id} variants={itemVariants}>
+            <motion.div key={archive.zone_id} variants={itemVariants as any}>
               <Link to={`/details/${archive.zone_id}`} className="block h-full">
                 <Card className="group h-full overflow-hidden border border-border/50 bg-card/30 backdrop-blur-sm transition-all duration-300 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5 dark:hover:shadow-primary/10">
                   <CardHeader className="border-b p-6 bg-gradient-to-r from-muted/80 to-muted/30 transition-colors duration-300 group-hover:from-primary/10 group-hover:to-primary/5">
@@ -351,6 +467,33 @@ export default function ArchivesDashboard() {
             <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
               <Search />
               <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-2"
+                onClick={handleExportConfig}
+                title="Export Configuration"
+              >
+                <Download className="h-4 w-4" />
+                <span className="text-xs">Export</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-2"
+                onClick={handleImportConfig}
+                title="Import Configuration"
+              >
+                <Upload className="h-4 w-4" />
+                <span className="text-xs">Import</span>
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <Button
                 variant="ghost"
                 size="icon"
                 className="h-9 w-9"
@@ -380,6 +523,40 @@ export default function ArchivesDashboard() {
         zones={zonesForReorder}
         onReorder={handleZoneReorder}
       />
+
+      {/* Success Toast */}
+      <AnimatePresence>
+        {showSuccessToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 z-50"
+          >
+            <div className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-white shadow-lg max-w-md">
+              <Check className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm">{toastMessage}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Error Toast */}
+      <AnimatePresence>
+        {showErrorToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 z-50"
+          >
+            <div className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-3 text-white shadow-lg max-w-md">
+              <AlertCircle className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm">{toastMessage}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

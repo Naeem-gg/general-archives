@@ -273,18 +273,8 @@ export default function Details() {
                         <Server className="h-8 w-8 text-primary transition-all duration-300" />
                       </div>
                       <div className="space-y-2 text-center">
-                        <h2 className="text-xl font-medium transition-colors duration-300 group-hover:text-primary">
-                          {
-                            archive.zone_id == 111
-                              ? rackNumber === "1"
-                                ? `Pilot ${rackNumber}`
-                                : rackNumber === "2"
-                                  ? `Pilot ${rackNumber}`
-                                  : rackNumber === "3"
-                                    ? `Pilot ${rackNumber}`
-                                  : `Proben ${rackNumber}`
-                              : `Palette ${rackNumber}`
-                          }
+                        <h2 className="text-xl font-medium transition-colors duration-300 group-hover:text-primary" onClick={()=>console.log(archive.zone.subzones)}>
+                         {archive.zone.subzones[Number.parseInt(rackNumber) - 1].zone.zone_name}
                         </h2>
                         <p className="text-sm text-muted-foreground">
                           {archive.zone.subzones[

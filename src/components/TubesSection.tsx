@@ -11,8 +11,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTubesStore } from "@/hooks/store";
+import { useTubesStore, useSortingConfigStore } from "@/hooks/store";
 import { useSearchParams } from "react-router-dom";
+import { calculatePositionOrder } from "@/lib/calculatePositionOrder";
 import type { Tube } from "./types";
 
 export default function Tubes({
@@ -30,6 +31,11 @@ export default function Tubes({
     setSelectedTubes,
   } = useTubesStore();
   const setIndex = useTubesStore((s) => s.setIndex);
+  const sortingRows = useSortingConfigStore((s) => s.rows);
+  const sortingColumns = useSortingConfigStore((s) => s.columns);
+  const sortingCorner = useSortingConfigStore((s) => s.corner);
+  const sortingDirection = useSortingConfigStore((s) => s.direction);
+  const sortingIsActive = useSortingConfigStore((s) => s.isActive);
 
   // state & refs
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,11 +56,15 @@ export default function Tubes({
   const zone_id = searchParams.get("zone_id");
   const lastSearchedRef = useRef<string | null>(null);
 
-  // determine number of columns
-  const columnsCount =
-    zone_id === "17" ? 10 :
+  // determine number of columns (use sorting config if active)
+  const columnsCount = useMemo(() => {
+    if (sortingIsActive && sortingColumns > 0) {
+      return sortingColumns;
+    }
+    return zone_id === "17" ? 10 :
       isFourthRack ? 10 :
         5;
+  }, [sortingIsActive, sortingColumns, zone_id, isFourthRack]);
 
   // highlight via URL
   useEffect(() => {
@@ -131,40 +141,95 @@ export default function Tubes({
 
   // Enhanced positions calculation for all zones with missing tubes
   const enhancedPositions = useMemo(() => {
+      if (sortingIsActive && sortingRows > 0 && sortingColumns > 0) {
+        const sortedTubes = [...tubes].sort((a, b) => a.position - b.position);
+        const totalGridPositions = sortingRows * sortingColumns;
+        
+        // Get the fill pattern - tells us WHERE each sequential number goes in the grid
+        // Pattern[i] tells us: "fill order (i+1) goes to which grid position?"
+        // For corner=2, dir=3: pattern = [5,4,3,2,1, 10,9,8,7,6, ...]
+        // This means: 1st fill goes to position 5, 2nd fill goes to position 4, etc.
+        const displayOrderPattern = calculatePositionOrder(
+          sortingRows,
+          sortingColumns,
+          sortingCorner,
+          sortingDirection
+        );
+        
+        // Create TWO mappings:
+        // 1. fillOrderToSlot: fill order number (1, 2, 3, ...) -> grid slot index (0, 1, 2, ...)
+        // 2. slotToFillOrder: grid slot index -> fill order number
+        // 
+        // displayOrderPattern[fillOrderIndex] = position (1-based)
+        // slot = position - 1 (0-based)
+        // fillOrderNumber = fillOrderIndex + 1 (1-based)
+        const fillOrderToSlot = new Map<number, number>();
+        const slotToFillOrder = new Map<number, number>();
+        
+        displayOrderPattern.forEach((position, fillOrderIndex) => {
+          const fillOrderNumber = fillOrderIndex + 1; // 1-based fill order
+          const slotIndex = position - 1; // 0-based slot index
+          fillOrderToSlot.set(fillOrderNumber, slotIndex);
+          slotToFillOrder.set(slotIndex, fillOrderNumber);
+        });
+        
+        // Create result array - each slot will contain a tube position or a placeholder
+        const result: number[] = new Array(totalGridPositions).fill(0);
+        
+        // Place each tube at its fill order slot
+        // 1st tube (index 0) goes to slot where fill order = 1
+        // 2nd tube (index 1) goes to slot where fill order = 2
+        // etc.
+        sortedTubes.forEach((tube, tubeIndex) => {
+          const fillOrderNumber = tubeIndex + 1; // 1-based fill order
+          const gridSlot = fillOrderToSlot.get(fillOrderNumber);
+          
+          if (gridSlot !== undefined && gridSlot < totalGridPositions) {
+            result[gridSlot] = tube.position;
+          }
+        });
+        
+        // For empty slots (value 0), use the FILL ORDER NUMBER that should be at this slot
+        // slotToFillOrder tells us: "what fill order number should appear at slot X?"
+        return result.map((pos, slotIdx) => {
+          if (pos !== 0) return pos;
+          const fillOrder = slotToFillOrder.get(slotIdx);
+          return fillOrder !== undefined ? -fillOrder : -(slotIdx + 1);
+        });
+      }
+    
+    // Zone 17, fourthRack, etc. remain unchanged
     if (zone_id === "17") {
-      // Zone 17: 200 positions (1-200), 20 columns, reverse chunk order
       const allPositions = Array.from({ length: 200 }, (_, i) => i + 1);
       const chunkSize = 10;
       const totalChunks = Math.ceil(allPositions.length / chunkSize);
-
+  
       const rows: number[][] = [];
       for (let c = 1; c <= totalChunks; c++) {
         const start = (c - 1) * chunkSize + 1;
         const row = Array.from({ length: chunkSize }, (_, i) => start + i);
         rows.push(row);
       }
-
-      return rows.reverse().flat(); // top chunk first (e.g., 181..200)
+  
+      return rows.reverse().flat();
     } else if (isFourthRack) {
-      // Fourth rack / zone 15: 50 positions (1-50), 10 columns, column-major then flip both axes
       const allPositions = Array.from({ length: 50 }, (_, i) => i + 1);
       const out: number[] = [];
       const rowsCount = Math.ceil(allPositions.length / 10);
-
+  
       for (let row = 0; row < rowsCount; row++) {
         for (let col = 0; col < 10; col++) {
-          const idx = col * rowsCount + row; // column-major
+          const idx = col * rowsCount + row;
           if (idx < allPositions.length) out.push(allPositions[idx]);
         }
       }
       return out.reverse();
     } else {
-      // Default zones (15 & 16): 50 positions (1-50), 5 columns, reverse-chunk
       const allPositions = Array.from({ length: 50 }, (_, i) => i + 1);
       const result: number[] = [];
       const chunkSize = 5;
       const numChunks = Math.ceil(allPositions.length / chunkSize);
-
+  
       for (let i = numChunks - 1; i >= 0; i--) {
         const start = i * chunkSize;
         const end = Math.min(start + chunkSize, allPositions.length);
@@ -172,7 +237,7 @@ export default function Tubes({
       }
       return result;
     }
-  }, [zone_id, isFourthRack]);
+  }, [zone_id, isFourthRack, sortingIsActive, sortingRows, sortingColumns, sortingCorner, sortingDirection, tubes]);
 
   // calculate tube size
   const calculateTubeDimensions = () => {
@@ -480,20 +545,15 @@ export default function Tubes({
                   </div>
                 </motion.div>
               ))
-              : enhancedPositions.map((pos) => {
+              : enhancedPositions.map((pos, idx) => {
                 const tube = tubeMap.get(pos);
                 return tube ? (
-                  <motion.div
+                  <div
                     key={tube.content.line_code}
-                    layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
                     id={tube.content.line_code.toString()}
                     onClick={() => {
                       setHighlightedTube(tube);
-                      setIndex(enhancedPositions.indexOf(pos) + 1);
+                      setIndex(idx + 1);
                     }}
                     className={`rounded-lg overflow-hidden flex flex-col shadow-md transition-shadow duration-300 hover:shadow-lg ${highlightedTube?.content.line_code === tube.content.line_code
                         ? "ring-4 ring-primary ring-offset-4 ring-offset-background"
@@ -529,20 +589,15 @@ export default function Tubes({
                       </label>
                       <div className="text-xs text-right text-muted-foreground">#{tube.position}</div>
                     </div>
-                  </motion.div>
+                  </div>
                 ) : (
-                  <motion.div
-                    key={`missing-${pos}`}
-                    layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 0.5, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.2 }}
+                  <div
+                    key={`missing-${pos}-${idx}`}
                     className="rounded-lg overflow-hidden flex flex-col items-center justify-center shadow-inner bg-gray-200 dark:bg-gray-700 border border-dashed border-border/50"
                     style={commonStyle}
                   >
-                    <span className="text-xs text-muted-foreground">Leer #{pos}</span>
-                  </motion.div>
+                    <span className="text-xs text-muted-foreground">Leer #{pos < 0 ? Math.abs(pos) : pos}</span>
+                  </div>
                 );
               })}
           </AnimatePresence>

@@ -23,6 +23,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -39,13 +49,14 @@ import {
 import {
   useArchiveStore,
   useLoadingStore,
+  useSortingConfigStore,
   useToastStore,
   useTubesStore,
 } from "@/hooks/store";
 import { deleteArchive } from "@/lib/xmlrpc";
-import { zoneNameMapping } from "@/lib/zoneNameMapping";
 import { ask, message } from "@tauri-apps/plugin-dialog";
 import { useSinglePaletteStore } from "@/hooks/store";
+import { zoneNameMapping } from "@/lib/zoneNameMapping";
 
 export default function Header({
   id,
@@ -64,12 +75,20 @@ export default function Header({
   const { singlePaletteZoneIDs } = useSinglePaletteStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showTestDialog, setShowTestDialog] = useState(false);
+  const [rows, setRows] = useState<number>(0);
+  const [columns, setColumns] = useState<number>(0);
+  const [corner, setCorner] = useState<number>(0);
+  const [direction, setDirection] = useState<number>(0);
   const setIsLoading = useLoadingStore((state) => state.setIsLoading);
   const isLoading = useLoadingStore((state) => state.isLoading);
 
   const setToastMessage = useToastStore((state) => state.setToastMessage);
   const setShowSuccessToast = useToastStore(
     (state) => state.setShowSuccessToast,
+  );
+  const setSortingConfig = useSortingConfigStore(
+    (state) => state.setSortingConfig,
   );
 
   const handleDelete = async () => {
@@ -289,7 +308,8 @@ export default function Header({
                   className="mx-24 group"
                 >
                  
-                      {zoneNameMapping[Number.parseInt(zone_id)]}
+                     {zoneNameMapping[Number.parseInt(zone_id)]}
+                     
                 </Button>
                   
                 </motion.div>
@@ -307,6 +327,24 @@ export default function Header({
         </div>
 
         <div className="flex items-center space-x-3">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTestDialog(true)}
+                  disabled={isLoading}
+                >
+                  Test Dialog
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Test Dialog öffnen</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -404,6 +442,154 @@ export default function Header({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Test Dialog */}
+      <Dialog open={showTestDialog} onOpenChange={setShowTestDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Test Dialog</DialogTitle>
+            <DialogDescription>
+              Eingabe von rows, columns, corner und direction (nur ganze Zahlen)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="rows">Rows</Label>
+              <Input
+                id="rows"
+                type="number"
+                value={rows}
+                onChange={(e) =>
+                  setRows(Number.parseInt(e.target.value, 10) || 0)
+                }
+                placeholder="Enter rows"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="columns">Columns</Label>
+              <Input
+                id="columns"
+                type="number"
+                value={columns}
+                onChange={(e) =>
+                  setColumns(Number.parseInt(e.target.value, 10) || 0)
+                }
+                placeholder="Enter columns"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="corner">Corner (1=top-left, 2=top-right, 3=bottom-right, 4=bottom-left)</Label>
+              <Input
+                id="corner"
+                type="number"
+                min="1"
+                max="4"
+                value={corner}
+                onChange={(e) => {
+                  const val = Number.parseInt(e.target.value, 10) || 0;
+                  setCorner(val);
+                  // Reset direction if invalid combination
+                  if (val === 1 && (direction === 3 || direction === 4)) {
+                    setDirection(1);
+                  } else if (val === 2 && (direction === 1 || direction === 4)) {
+                    setDirection(2);
+                  } else if (val === 3 && (direction === 1 || direction === 2)) {
+                    setDirection(3);
+                  } else if (val === 4 && (direction === 2 || direction === 3)) {
+                    setDirection(1);
+                  }
+                }}
+                placeholder="Enter corner (1-4)"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="direction">
+                Direction (1=right, 2=down, 3=left, 4=up)
+                {corner === 1 && " - Valid: 1 (right), 2 (down)"}
+                {corner === 2 && " - Valid: 2 (down), 3 (left)"}
+                {corner === 3 && " - Valid: 3 (left), 4 (up)"}
+                {corner === 4 && " - Valid: 1 (right), 4 (up)"}
+              </Label>
+              <Input
+                id="direction"
+                type="number"
+                min="1"
+                max="4"
+                value={direction}
+                onChange={(e) => {
+                  const val = Number.parseInt(e.target.value, 10) || 0;
+                  setDirection(val);
+                }}
+                placeholder="Enter direction (1-4)"
+              />
+              {(corner === 1 && (direction === 3 || direction === 4)) ||
+              (corner === 2 && (direction === 1 || direction === 4)) ||
+              (corner === 3 && (direction === 1 || direction === 2)) ||
+              (corner === 4 && (direction === 2 || direction === 3)) ? (
+                <p className="text-sm text-destructive">
+                  Invalid combination! Corner {corner} cannot go {direction === 1 ? "right" : direction === 2 ? "down" : direction === 3 ? "left" : "up"}.
+                </p>
+              ) : null}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowTestDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              disabled={
+                rows <= 0 ||
+                columns <= 0 ||
+                corner < 1 ||
+                corner > 4 ||
+                direction < 1 ||
+                direction > 4 ||
+                !(
+                  (corner === 1 && (direction === 1 || direction === 2)) ||
+                  (corner === 2 && (direction === 2 || direction === 3)) ||
+                  (corner === 3 && (direction === 3 || direction === 4)) ||
+                  (corner === 4 && (direction === 1 || direction === 4))
+                )
+              }
+              onClick={() => {
+                // Validate inputs
+                if (rows <= 0 || columns <= 0 || corner < 1 || corner > 4 || direction < 1 || direction > 4) {
+                  setToastMessage("Bitte geben Sie gültige Werte ein");
+                  setShowSuccessToast(true);
+                  setTimeout(() => setShowSuccessToast(false), 3000);
+                  return;
+                }
+                
+                // Validate corner/direction combination
+                const isValid =
+                  (corner === 1 && (direction === 1 || direction === 2)) ||
+                  (corner === 2 && (direction === 2 || direction === 3)) ||
+                  (corner === 3 && (direction === 3 || direction === 4)) ||
+                  (corner === 4 && (direction === 1 || direction === 4));
+                
+                if (!isValid) {
+                  setToastMessage(
+                    `Ungültige Kombination! Ecke ${corner} kann nicht in Richtung ${direction} gehen.`,
+                  );
+                  setShowSuccessToast(true);
+                  setTimeout(() => setShowSuccessToast(false), 3000);
+                  return;
+                }
+                
+                setSortingConfig({ rows, columns, corner, direction });
+                setShowTestDialog(false);
+                setToastMessage(
+                  `Sortierung angewendet: ${rows}×${columns}, Ecke ${corner}, Richtung ${direction}`,
+                );
+                setShowSuccessToast(true);
+                setTimeout(() => setShowSuccessToast(false), 3000);
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
